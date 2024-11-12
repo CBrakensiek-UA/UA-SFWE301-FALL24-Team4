@@ -5,7 +5,7 @@
 package com.mycompany.sfwe301fall24project_team4;
 
 /**
- *
+ * This class contains the extra user data for a patient.
  */
 public class Patient extends User {
     private String birthDate;

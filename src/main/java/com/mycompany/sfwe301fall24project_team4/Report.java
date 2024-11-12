@@ -3,10 +3,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.mycompany.sfwe301fall24project_team4;
+import java.util.ArrayList;
 
 /**
  *
  */
 public class Report {
+    private ArrayList<String> contents;
+    
+    public Report(){
+        contents = new ArrayList<>();
+    }
     
 }

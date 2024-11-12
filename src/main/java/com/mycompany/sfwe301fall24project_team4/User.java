@@ -5,7 +5,7 @@
 package com.mycompany.sfwe301fall24project_team4;
 
 /**
- *
+ * This is the abstract base class for a registered user of the PMS.
  */
 public abstract class User {
     protected String name;
