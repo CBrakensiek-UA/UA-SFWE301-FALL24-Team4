@@ -15,4 +15,13 @@ public class Report {
         contents = new ArrayList<>();
     }
     
+    public void addLine(String line){
+        contents.add(line);
+    }
+    
+    public void printReport(){
+        for(String s : contents){
+            System.out.println(s);
+        }
+    }
 }

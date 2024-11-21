@@ -3,15 +3,20 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.mycompany.sfwe301fall24project_team4;
-import java.util.ArrayList;
 
 /**
  *
  */
-public class InventoryControl {
-    private ArrayList<InventoryItem> inventory;
+public class Medication extends InventoryItem{
+    private double dosage;
     
-    public InventoryControl(){
-        inventory = new ArrayList<>();
+    public Medication(){
+        
     }
+    
+    public Medication(String name, int ID, int quantity, int cost, int dosage){
+        super(name, ID, quantity, cost);
+        this.dosage = dosage;
+    }
+    
 }

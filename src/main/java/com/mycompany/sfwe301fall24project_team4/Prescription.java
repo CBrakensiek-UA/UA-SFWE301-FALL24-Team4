@@ -7,20 +7,21 @@ package com.mycompany.sfwe301fall24project_team4;
 /**
  *
  */
-public class InventoryItem {
-    private String name;
+public class Prescription {
     private int ID;
-    private int quantity;
-    private int cost;
+    private int patientID;
+    private int medicationID;
+    private int amount;
     
-    public InventoryItem(){
+    public Prescription(){
         
     }
     
-    public InventoryItem(String name, int ID, int quanitity, int cost){
-        this.name = name;
+    public Prescription(int ID, int patientID, int medicationID, int amount){
         this.ID = ID;
-        this.quantity = quantity;
-        this.cost = cost;
+        this.patientID = patientID;
+        this.medicationID = medicationID;
+        this.amount = amount;
     }
+    
 }
