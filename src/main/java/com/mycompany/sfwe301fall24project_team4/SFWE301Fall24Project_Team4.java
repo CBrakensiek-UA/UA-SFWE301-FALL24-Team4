@@ -3,6 +3,7 @@
  */
 
 package com.mycompany.sfwe301fall24project_team4;
+import java.time.LocalDate;
 
 /**
  * This class contains main, which, since not the other PMS subsystems are not implemented,
@@ -15,14 +16,12 @@ public class SFWE301Fall24Project_Team4 {
         Patient patient = new Patient();
         patient.setName("Tim");
         
-        ReportGeneration reportGen = new ReportGeneration();
-        PharmacyStaff staff;
-        
+        PharmacyStaff staff; 
         
         staff = new PharmacyStaff("Test1 Name", 1, "Pharmacy Manager");
         
-        reportGen.logLogin(staff, "11/12/16");
-        reportGen.logLogout(staff, "11/13/16");
+        ReportGeneration.logLogin(staff, LocalDate.of(2016, 11, 13));
+        ReportGeneration.logLogout(staff, LocalDate.of(2016, 11, 13));
         
         
     }

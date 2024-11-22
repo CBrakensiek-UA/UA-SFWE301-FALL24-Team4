@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.mycompany.sfwe301fall24project_team4;
+import java.time.LocalDate;
 
 /**
  *
@@ -14,8 +15,8 @@ public class Medication extends InventoryItem{
         
     }
     
-    public Medication(String name, int ID, int quantity, int cost, int dosage){
-        super(name, ID, quantity, cost);
+    public Medication(String name, int ID, int quantity, int cost, int dosage, LocalDate expirationDate){
+        super(name, ID, quantity, cost, expirationDate);
         this.dosage = dosage;
     }
     

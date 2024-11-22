@@ -9,9 +9,7 @@ import java.util.ArrayList;
  *
  */
 public class InventoryControl {
-    private ArrayList<InventoryItem> inventory;
+    private static ArrayList<InventoryItem> inventory = new ArrayList<>();
     
-    public InventoryControl(){
-        inventory = new ArrayList<>();
-    }
+    
 }
