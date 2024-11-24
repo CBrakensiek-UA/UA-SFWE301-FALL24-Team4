@@ -9,7 +9,7 @@ import java.time.LocalDate;
  *
  */
 public class Medication extends InventoryItem{
-    private double dosage;
+    private double dosage; // Unit: ???
     
     public Medication(){
         

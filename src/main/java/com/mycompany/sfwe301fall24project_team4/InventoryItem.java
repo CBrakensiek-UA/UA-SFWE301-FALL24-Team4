@@ -12,7 +12,7 @@ public class InventoryItem {
     private String name;
     private int ID;
     private int quantity;
-    private int cost;
+    private int cost; // Units: cents (not dollars.cents) to avoid floating point weirdness
     private LocalDate expirationDate;
     
     
@@ -20,7 +20,7 @@ public class InventoryItem {
         
     }
     
-    public InventoryItem(String name, int ID, int quanitity, int cost, LocalDate expirationDate){
+    public InventoryItem(String name, int ID, int quantity, int cost, LocalDate expirationDate){
         this.name = name;
         this.ID = ID;
         this.quantity = quantity;

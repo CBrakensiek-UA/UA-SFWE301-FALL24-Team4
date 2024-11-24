@@ -11,5 +11,7 @@ import java.util.ArrayList;
 public class InventoryControl {
     private static ArrayList<InventoryItem> inventory = new ArrayList<>();
     
-    
+    public static void addItem(InventoryItem item){
+        inventory.add(item);
+    }
 }
