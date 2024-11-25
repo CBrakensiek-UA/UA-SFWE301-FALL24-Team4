@@ -12,7 +12,7 @@ public class InventoryItem {
     private String name;
     private int ID;
     private int quantity;
-    private int cost; // Units: cents (not dollars.cents) to avoid floating point weirdness
+    private int cost; // Units: cents (not dollars and cents) to avoid floating point weirdness
     private LocalDate expirationDate;
     
     
@@ -26,5 +26,18 @@ public class InventoryItem {
         this.quantity = quantity;
         this.cost = cost;
         this.expirationDate = expirationDate;
+    }
+    
+    @Override
+    public String toString(){
+        return name + " (ID: " + ID + ")";
+    }
+    
+    public boolean isExpired(){
+        return LocalDate.now().isAfter(expirationDate);
+    }
+    
+    public boolean isExpiredWithin30Days(){
+        return !isExpired() && LocalDate.now().isAfter(expirationDate.minusDays(30));
     }
 }

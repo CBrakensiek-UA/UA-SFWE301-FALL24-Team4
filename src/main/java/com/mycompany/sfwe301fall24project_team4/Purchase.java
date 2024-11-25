@@ -9,6 +9,8 @@ import java.util.ArrayList;
  *
  */
 public class Purchase {
+    // Should we have two kinds of purchases, maybe in different classes?
+    // (1) A purchase the patient makes from the pharmacy, (2) A purchase the pharmacy makes from a supplier
     private ArrayList<Integer> items; // InventoryItem ID's
     private ArrayList<Integer> prescriptions; // Prescription ID's
     

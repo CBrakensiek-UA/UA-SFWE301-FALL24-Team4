@@ -12,17 +12,19 @@ import java.util.Scanner;
  */
 public class SFWE301Fall24Project_Team4 {
     
-    private static void fillInventory(){
-        InventoryItem item1 = new InventoryItem("Skittles", 243, 5, 399, LocalDate.of(2017, 3, 20));
-        InventoryItem item2 = new InventoryItem("Clock", 888, 2, 599, LocalDate.of(9999, 12, 31));
-        InventoryItem item3 = new Medication("Med1", 243, 5, 399, 2, LocalDate.of(2017, 3, 20));
+    public static PharmacyStaff currentUser = new PharmacyStaff("Bill", 1, "Pharmacy Manager");
+    
+    public static void fillInventory(){
+        InventoryItem item1 = new InventoryItem("Skittles", 24344, 5, 399, LocalDate.of(2024, 3, 20));
+        InventoryItem item2 = new InventoryItem("Clock", 88888, 2, 599, LocalDate.of(9999, 12, 31));
+        InventoryItem item3 = new Medication("Med1", 24333, 5, 399, 2, LocalDate.of(2024, 11, 30));
         
         InventoryControl.addItem(item1);
         InventoryControl.addItem(item2);
         InventoryControl.addItem(item3);
     }
     
-    private static void displayOptions(){
+    public static void displayOptions(){
         System.out.println("Type the number of the option you want to execute (0 to exit): ");
         System.out.println("  1) Test logging login");
         System.out.println("  2) Test logging logout");
@@ -39,25 +41,26 @@ public class SFWE301Fall24Project_Team4 {
         Patient patient = new Patient();
         patient.setName("Tim");
         
-        PharmacyStaff staff = new PharmacyStaff("Test1 Name", 1, "Pharmacy Manager");
+        PharmacyStaff testUser1 = new PharmacyStaff("Test Name", 1, "Pharmacy Manager");
         
-        System.out.println("Created testing variables.\n");
+        System.out.println("Created testing data.\n");
         System.out.println("Welcome to the Pharamacy Management System (Inventory Control and Report Generation)!");
         
         int choice = -1;
         while(choice != 0){
+            InventoryControl.automaticChecks();
             displayOptions();
             choice = scnr.nextInt();
             switch(choice){
                 case 0:
                     break;
                 case 1:
-                    ReportGeneration.logLogin(staff, LocalDate.of(2016, 11, 13));
-                    System.out.println("Successful login");
+                    ReportGeneration.logLogin(testUser1, LocalDate.of(2016, 11, 13));
+                    System.out.println("Logged login.");
                     break;
                 case 2:
-                    ReportGeneration.logLogout(staff, LocalDate.of(2016, 11, 13));
-                    System.out.println("Successful logout");
+                    ReportGeneration.logLogout(testUser1, LocalDate.of(2016, 11, 14));
+                    System.out.println("Logged logout.");
                     break;
                 default:
                     System.out.println("Invalid option.");
