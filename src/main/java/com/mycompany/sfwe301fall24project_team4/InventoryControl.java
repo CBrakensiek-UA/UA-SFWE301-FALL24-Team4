@@ -125,4 +125,12 @@ public class InventoryControl {
             }
         }
     }
+    
+    public static int scanItemID(Scanner scnr){
+        // return the ID of the item scanned
+        // connection to scanner established and retrieved an ID for the item (simulated with keyboard input in this build)
+        System.out.print("Scanning: ");
+        int scannedID = scnr.nextInt();
+        return scannedID;
+    }
 }

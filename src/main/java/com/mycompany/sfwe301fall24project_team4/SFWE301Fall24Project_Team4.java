@@ -32,6 +32,7 @@ public class SFWE301Fall24Project_Team4 {
         System.out.println("  2) Test logging logout");
         System.out.println("  3) Perform inventory audit");
         System.out.println("  4) Adjust inventory");
+        System.out.println("  5) Scan inventory item");
         System.out.print("Option: ");
     }
 
@@ -71,10 +72,15 @@ public class SFWE301Fall24Project_Team4 {
                 case 4:
                     InventoryControl.adjustInventory();
                     break;
+                case 5:
+                    int scanID = InventoryControl.scanItemID(scnr);
+                    System.out.println("Scanned item ID: " + scanID);
+                    break;
                 default:
                     System.out.println("Invalid option.");
                     break;
             }
+            System.out.println();
         }
 
     }
