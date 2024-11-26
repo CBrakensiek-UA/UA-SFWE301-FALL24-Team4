@@ -2,3 +2,6 @@ Test1 Name,1,2016-11-13,logged in
 Test1 Name,1,2016-11-13,logged out
 Test1 Name,1,2016-11-13,logged in
 Test1 Name,1,2016-11-13,logged out
+Bill,1,2024-11-25,Inventory Audit,Skittles,24344,Old Quantity: 5,New Quantity: 6,Reason: Audit discrepancy
+Bill,1,2024-11-25,Inventory Audit,Aspirin,12345,Old Quantity: 100,New Quantity: 101,Reason: Audit discrepancy
+Bill,1,2024-11-25,Inventory Adjustment,Aspirin,12345,Old Quantity: 101,New Quantity: 33,Reason: Incorrect Input.
