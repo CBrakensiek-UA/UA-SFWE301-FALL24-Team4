@@ -18,7 +18,7 @@ public class SFWE301Fall24Project_Team4 {
     public static void fillInventory() {
         InventoryItem item1 = new InventoryItem("Skittles", 24344, 5, 399, LocalDate.of(2024, 3, 20));
         InventoryItem item2 = new InventoryItem("Clock", 88888, 2, 599, LocalDate.of(9999, 12, 31));
-        InventoryItem item3 = new Medication("Med1", 24333, 5, 399, 2, LocalDate.of(2024, 11, 30));
+        InventoryItem item3 = new Medication("Med1", 24333, 5, 399, LocalDate.of(2024, 11, 30), 11111, 22222);
         InventoryItem item4 = new InventoryItem("Aspirin", 12345, 100, 299, LocalDate.of(2025, 6, 15));
         InventoryControl.addItem(item1);
         InventoryControl.addItem(item2);
