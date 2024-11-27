@@ -10,6 +10,8 @@ import java.time.LocalDate;
  */
 public class Medication extends InventoryItem{
     private double dosage; // Unit: ???
+    private int batchNumber;
+    private int lotNumber;
     
     public Medication(){
         
