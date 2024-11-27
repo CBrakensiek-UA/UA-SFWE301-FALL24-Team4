@@ -9,7 +9,6 @@ import java.time.LocalDate;
  *
  */
 public class Medication extends InventoryItem{
-    private double dosage; // Unit: ???
     private int batchNumber;
     private int lotNumber;
     
@@ -17,9 +16,10 @@ public class Medication extends InventoryItem{
         
     }
     
-    public Medication(String name, int ID, int quantity, int cost, int dosage, LocalDate expirationDate){
+    public Medication(String name, int ID, int quantity, int cost, LocalDate expirationDate, int batchNumber, int lotNumber){
         super(name, ID, quantity, cost, expirationDate);
-        this.dosage = dosage;
+        this.batchNumber = batchNumber;
+        this.lotNumber = lotNumber;
     }
     
 }
