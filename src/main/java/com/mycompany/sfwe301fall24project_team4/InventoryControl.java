@@ -13,7 +13,16 @@ import java.util.Scanner;
 public class InventoryControl {
 
     public static ArrayList<InventoryItem> inventory = new ArrayList<>();
-
+    
+    public static InventoryItem getItemFromID(int id){
+        for(InventoryItem item : inventory){
+            if(item.getID() == id){
+                return item;
+            }
+        }
+        return null;
+    }
+    
     public static void addItem(InventoryItem item) {
         inventory.add(item);
     }
