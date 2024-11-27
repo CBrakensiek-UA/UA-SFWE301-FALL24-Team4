@@ -33,6 +33,9 @@ public class SFWE301Fall24Project_Team4 {
         System.out.println("  3) Perform inventory audit");
         System.out.println("  4) Adjust inventory");
         System.out.println("  5) Scan inventory item");
+        System.out.println(" 10) Generate financial report");
+        System.out.println(" 11) Generate inventory report");
+        System.out.println(" 12) Generate transaction report");
         System.out.print("Option: ");
     }
 
@@ -75,6 +78,35 @@ public class SFWE301Fall24Project_Team4 {
                 case 5:
                     int scanID = InventoryControl.scanItemID(scnr);
                     System.out.println("Scanned item ID: " + scanID);
+                    break;
+                case 10:
+                    // NOT IMPLEMENTED YET
+                    break;
+                case 11:
+                    // NOT IMPLEMENTED YET
+                    break;
+                case 12:
+                    System.out.println("Choose a suboption:");
+                    System.out.println("  1) Monthly report");
+                    System.out.println("  2) Custom timerange");
+                    System.out.print("Option: ");
+                    int subchoice = scnr.nextInt();
+
+                    if(subchoice == 1){
+                        System.out.print("Enter year: ");
+                        int year = scnr.nextInt();
+                        System.out.print("Enter month (1-12): ");
+                        int month = scnr.nextInt();
+                        ReportGeneration.generateTransactionReport(year, month);
+                    }
+                    else{
+                        System.out.print("Enter start date (YYYY-MM-DD): ");
+                        String start = scnr.next();
+                        System.out.print("Enter end date (YYYY-MM-DD): ");
+                        String end = scnr.next();
+                        ReportGeneration.generateTransactionReport(LocalDate.parse(start), LocalDate.parse(end));
+                    }
+                    
                     break;
                 default:
                     System.out.println("Invalid option.");

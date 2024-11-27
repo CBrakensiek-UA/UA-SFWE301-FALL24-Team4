@@ -9,7 +9,7 @@ package com.mycompany.sfwe301fall24project_team4;
  */
 public class Prescription {
     private int ID;
-    private int patientID;
+    private Patient patient;
     private int medicationID;
     private int amount;
     
@@ -17,9 +17,9 @@ public class Prescription {
         
     }
     
-    public Prescription(int ID, int patientID, int medicationID, int amount){
+    public Prescription(int ID, Patient patient, int medicationID, int amount){
         this.ID = ID;
-        this.patientID = patientID;
+        this.patient = patient;
         this.medicationID = medicationID;
         this.amount = amount;
     }

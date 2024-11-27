@@ -7,19 +7,23 @@ import java.util.ArrayList;
 import java.io.*;
 
 /**
- * This class manages a CSV file that holds logs of system data/activity.
+ * This class manages a an external file for use making log CSVs and report files.
  */
-public class Log {
+public class ExternalFile {
     private String filename;
     private ArrayList<String> contents;
     
-    public Log(){
+    public ExternalFile(){
         filename = "TestLog.csv";
         
     }
-    public Log(String filename){
+    public ExternalFile(String filename){
         this.filename = filename;
         contents = new ArrayList<>();
+    }
+    
+    public ArrayList<String> getContents(){
+        return contents;
     }
     
     public boolean readFromFile(){
@@ -80,5 +84,9 @@ public class Log {
     
     public void addContent(String content){
         contents.add(content);
+    }
+    
+    public void clearContent(){
+        contents.clear();
     }
 }
