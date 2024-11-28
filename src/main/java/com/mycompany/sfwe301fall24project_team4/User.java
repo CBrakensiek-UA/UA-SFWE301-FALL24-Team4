@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.sfwe301fall24project_team4;
 
 /**
@@ -10,24 +6,20 @@ package com.mycompany.sfwe301fall24project_team4;
 public abstract class User {
     protected String name;
     protected int ID;
-    
-    
-    public void setName(String name){
+
+    public void setName(String name) {
         this.name = name;
     }
-    
-    public void setID(int ID){
+
+    public void setID(int ID) {
         this.ID = ID;
     }
-    
-    
-    
-    public String getName(){
+
+    public String getName() {
         return name;
     }
-    
-    public int getID(){
+
+    public int getID() {
         return ID;
     }
-    
 }

@@ -5,3 +5,18 @@ Test1 Name,1,2016-11-13,logged out
 Bill,1,2024-11-25,Inventory Audit,Skittles,24344,Old Quantity: 5,New Quantity: 6,Reason: Audit discrepancy
 Bill,1,2024-11-25,Inventory Audit,Aspirin,12345,Old Quantity: 100,New Quantity: 101,Reason: Audit discrepancy
 Bill,1,2024-11-25,Inventory Adjustment,Aspirin,12345,Old Quantity: 101,New Quantity: 33,Reason: Incorrect Input.
+Bill,1,2024-11-27,Purchase from supplier,1000,24344,50,5001
+Bill,1,2024-11-27,Purchase from supplier,1001,24333,50,5001
+Bill,1,2024-11-27,Purchase from supplier,1002,24344,50,5001
+Bill,1,2024-11-27,Purchase from supplier,1003,24333,50,5001
+Bill,1,2024-11-27,Purchase from supplier,1004,24344,50,5001
+Bill,1,2024-11-27,Purchase from supplier,1005,24333,50,5001
+Bill,1,2024-11-27,Inventory Adjustment,Aspirin,12345,Old Quantity: 100,New Quantity: 33,Reason: Just because.
+Bill,1,2024-11-27,Purchase from supplier,1006,24344,50,5001
+Bill,1,2024-11-27,Purchase from supplier,1007,24333,50,5001
+Bill,1,2024-11-27,Purchase from supplier,1008,24344,50,5001
+Bill,1,2024-11-27,Purchase from supplier,1009,24333,50,5001
+Bill,1,2024-11-27,Purchase from supplier,1010,24344,50,5001
+Bill,1,2024-11-27,Purchase from supplier,1011,24333,50,5001
+Bill,1,2024-11-27,Purchase from supplier,1012,24344,50,5001
+Bill,1,2024-11-27,Purchase from supplier,1013,24333,50,5001
