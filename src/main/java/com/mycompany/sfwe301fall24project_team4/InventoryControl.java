@@ -369,4 +369,57 @@ public class InventoryControl {
                 shipmentDate
         );
     }
+    
+    /**
+     * Handle returned items, logging the change and updating the inventory.
+     * @param user             The Patient who returned the item.
+     */
+    public static void returnItem(Patient user) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Enter the Inventory Item ID returned:");
+        if (!scanner.hasNextInt()) {
+            System.out.println("Invalid input. Item ID must be an integer.");
+            scanner.next(); // Clear invalid input
+            return;
+        }
+        int itemId = scanner.nextInt();
+
+        InventoryItem item = getItemFromID(itemId);
+        if (item == null) {
+            System.out.println("Inventory Item not found.");
+            return;
+        }
+
+        System.out.println("Enter the quantity returned:");
+        if (!scanner.hasNextInt()) {
+            System.out.println("Invalid input. Quantity must be an integer.");
+            scanner.next(); // Clear invalid input
+            return;
+        }
+        int quantityReturned = scanner.nextInt();
+        
+        System.out.println("Enter the return date (YYYY-MM-DD):");
+        String returnDateStr = scanner.next();
+        LocalDate returnDate;
+        try {
+            returnDate = LocalDate.parse(returnDateStr);
+        } catch (Exception e) {
+            System.out.println("Invalid date format.");
+            return;
+        }
+        
+        int oldQuantity = item.getQuantity();
+        item.setQuantity(oldQuantity + quantityReturned);
+
+        System.out.println("Item(s) returned successfully.");
+
+        // Log the shipment receipt
+        ReportGeneration.logReturn(
+                user,
+                item,
+                quantityReturned,
+                returnDate
+        );
+    }
 }

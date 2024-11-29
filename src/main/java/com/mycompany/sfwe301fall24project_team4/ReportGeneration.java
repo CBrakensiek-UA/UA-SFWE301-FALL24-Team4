@@ -207,6 +207,34 @@ public class ReportGeneration {
         transactionLog.addContent(activity);
         transactionLog.writeToFile();
     }
+    
+    /**
+     * Logs a shipment receipt event.
+     *
+     * @param user             The Patient who returned the item.
+     * @param item             The InventoryItem received.
+     * @param quantityReceived The quantity received.
+     * @param returnDate       The date when the item(s) were returned.
+     */
+    public static void logReturn(
+            Patient user,
+            InventoryItem item,
+            int quantityReceived,
+            LocalDate returnDate
+    ) {
+        String activity = String.join(",",
+                user.getName(),
+                String.valueOf(user.getID()),
+                returnDate.toString(),
+                "Item(s) returned",
+                String.valueOf(item.getID()),
+                String.valueOf(quantityReceived)
+        );
+
+        transactionLog.readFromFile();
+        transactionLog.addContent(activity);
+        transactionLog.writeToFile();
+    }
 
     /**
      * Generates a financial report for a specific month.

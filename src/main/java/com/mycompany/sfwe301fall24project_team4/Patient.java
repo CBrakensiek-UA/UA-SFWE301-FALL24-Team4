@@ -11,7 +11,12 @@ public class Patient extends User {
     private String insuranceInfo;
 
     public Patient() {
-
+        
+    }
+    
+    public Patient(String name, int ID) {
+        this.name = name;
+        this.ID = ID;
     }
 
     public Patient(String name, int ID, String birthDate, String address, String phoneNumber, String email, String insuranceInfo) {

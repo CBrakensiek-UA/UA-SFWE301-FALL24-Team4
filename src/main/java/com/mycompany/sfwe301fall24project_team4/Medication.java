@@ -13,14 +13,14 @@ public class Medication extends InventoryItem {
 
     }
 
-    public Medication(String name, int ID, int quantity, int cost, LocalDate expirationDate, int reorderThreshold, int criticalThreshold, int batchNumber, int lotNumber) {
-        super(name, ID, quantity, cost, expirationDate, reorderThreshold, criticalThreshold);
+    public Medication(String name, int ID, int quantity, int cost, LocalDate expirationDate, String location, int reorderThreshold, int criticalThreshold, int batchNumber, int lotNumber) {
+        super(name, ID, quantity, cost, expirationDate, location, reorderThreshold, criticalThreshold);
         this.batchNumber = batchNumber;
         this.lotNumber = lotNumber;
     }
 
-    public Medication(String name, int ID, int quantity, int cost, LocalDate expirationDate, int batchNumber, int lotNumber) {
-        super(name, ID, quantity, cost, expirationDate, 10, 5); // Default thresholds for Medication
+    public Medication(String name, int ID, int quantity, int cost, LocalDate expirationDate, String location, int batchNumber, int lotNumber) {
+        super(name, ID, quantity, cost, expirationDate, location, 10, 5); // Default thresholds for Medication
         this.batchNumber = batchNumber;
         this.lotNumber = lotNumber;
     }

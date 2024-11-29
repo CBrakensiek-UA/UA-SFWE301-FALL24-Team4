@@ -14,23 +14,25 @@ public class InventoryItem {
     private LocalDate expirationDate;
     private int reorderThreshold; // New attribute
     private int criticalThreshold; // New attribute
+    private String location;
 
     public InventoryItem() {
 
     }
 
-    public InventoryItem(String name, int ID, int quantity, int cost, LocalDate expirationDate, int reorderThreshold, int criticalThreshold) {
+    public InventoryItem(String name, int ID, int quantity, int cost, LocalDate expirationDate, String location, int reorderThreshold, int criticalThreshold) {
         this.name = name;
         this.ID = ID;
         this.quantity = quantity;
         this.cost = cost;
         this.expirationDate = expirationDate;
+        this.location = location;
         this.reorderThreshold = reorderThreshold;
         this.criticalThreshold = criticalThreshold;
     }
 
-    public InventoryItem(String name, int ID, int quantity, int cost, LocalDate expirationDate, int reorderThreshold) {
-        this(name, ID, quantity, cost, expirationDate, reorderThreshold, 5); // Default critical threshold
+    public InventoryItem(String name, int ID, int quantity, int cost, LocalDate expirationDate, String location, int reorderThreshold) {
+        this(name, ID, quantity, cost, expirationDate, location, reorderThreshold, 5); // Default critical threshold
     }
 
     @Override
@@ -93,5 +95,13 @@ public class InventoryItem {
 
     public void setExpirationDate(LocalDate expirationDate) {
         this.expirationDate = expirationDate;
+    }
+    
+    public String getLocation(){
+        return location;
+    }
+    
+    public void setLocation(){
+        this.location = location;
     }
 }
