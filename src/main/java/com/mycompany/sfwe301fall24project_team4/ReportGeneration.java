@@ -245,9 +245,11 @@ public class ReportGeneration {
     public static void generateFinancialReport(int year, int month) {
         // Placeholder implementation
         // Implement based on financial data tracking
-        System.out.println("Financial Report Generation is not yet implemented.");
-    }
+        LocalDate start = LocalDate.of(year, month, 1);
+        LocalDate end = LocalDate.of(year, month, start.lengthOfMonth());
 
+        generateFinancialReport(start, end);
+    }
     /**
      * Generates a financial report for a specific date range.
      *
@@ -371,7 +373,7 @@ public class ReportGeneration {
                         case "Purchase from supplier":
                             if (transaction.length >= 8) {
                                 InventoryItem item = InventoryControl.getItemFromID(Integer.parseInt(transaction[5]));
-                                Supplier supplier = SFWE301Fall24Project_Team4.getSupplierByID(Integer.parseInt(transaction[7]));
+                                Supplier supplier = PMS.getSupplierByID(Integer.parseInt(transaction[7]));
                                 String supplierName = (supplier != null) ? supplier.getName() : "Unknown Supplier";
                                 String itemName = (item != null) ? item.getName() : "Unknown Item";
                                 transactionReport.addContent("On " + transactionDate + ", " + transaction[0] + " (ID: "
@@ -512,7 +514,7 @@ public class ReportGeneration {
                         // userName,userID,date,eventType,purchaseID,itemID,quantity,supplierID
                         if (transaction.length >= 8) {
                             InventoryItem item = InventoryControl.getItemFromID(Integer.parseInt(transaction[5]));
-                            Supplier supplier = SFWE301Fall24Project_Team4.getSupplierByID(Integer.parseInt(transaction[7]));
+                            Supplier supplier = PMS.getSupplierByID(Integer.parseInt(transaction[7]));
                             String supplierName = (supplier != null) ? supplier.getName() : "Unknown Supplier";
                             String itemName = (item != null) ? item.getName() : "Unknown Item";
                             purchaseReport.addContent("On " + transactionDate + ", " + transaction[0] + " (ID: "

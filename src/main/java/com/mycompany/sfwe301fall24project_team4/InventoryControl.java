@@ -53,7 +53,7 @@ public class InventoryControl {
         System.out.println("Performing automatic inventory checks...");
 
         // Check for expired items
-        if (SFWE301Fall24Project_Team4.currentUser.getRole().equals("Pharmacy Manager")) { // Only pharmacy manager gets notification
+        if (PMS.currentUser.getRole().equals("Pharmacy Manager")) { // Only pharmacy manager gets notification
             for (InventoryItem item : InventoryControl.inventory) {
                 if (item.isExpired()) {
                     System.out.println(item + " has expired.");
@@ -62,7 +62,7 @@ public class InventoryControl {
         }
 
         // Check for soon-to-expire items
-        if (SFWE301Fall24Project_Team4.currentUser.getRole().equals("Pharmacy Manager")) { // Only pharmacy manager gets notification
+        if (PMS.currentUser.getRole().equals("Pharmacy Manager")) { // Only pharmacy manager gets notification
             for (InventoryItem item : InventoryControl.inventory) {
                 if (item.isExpiredWithin30Days()) {
                     System.out.println(item + " will expire within 30 days.");
@@ -94,12 +94,12 @@ public class InventoryControl {
      */
     private static void generatePurchaseOrder(InventoryItem item, int quantity) {
         // For simplicity, select the first supplier
-        if (SFWE301Fall24Project_Team4.suppliers.isEmpty()) {
+        if (PMS.suppliers.isEmpty()) {
             System.out.println("No suppliers available to generate purchase order.");
             return;
         }
 
-        Supplier supplier = SFWE301Fall24Project_Team4.suppliers.get(0);
+        Supplier supplier = PMS.suppliers.get(0);
 
         Purchase purchaseOrder = new Purchase();
         purchaseOrder.getItems().add(item.getID());
@@ -111,7 +111,7 @@ public class InventoryControl {
 
         // Log the purchase order
         ReportGeneration.logPurchaseOrder(
-                SFWE301Fall24Project_Team4.currentUser,
+                PMS.currentUser,
                 purchaseOrder,
                 item,
                 quantity
@@ -125,8 +125,8 @@ public class InventoryControl {
      */
     public static void fillPrescription() {
         // Ensure only authorized users can fill prescriptions
-        if (!SFWE301Fall24Project_Team4.currentUser.getRole().equals("Pharmacist")
-                && !SFWE301Fall24Project_Team4.currentUser.getRole().equals("Pharmacy Manager")) {
+        if (!PMS.currentUser.getRole().equals("Pharmacist")
+                && !PMS.currentUser.getRole().equals("Pharmacy Manager")) {
             System.out.println("Access denied. Only Pharmacists or Pharmacy Managers can fill prescriptions.");
             return;
         }
@@ -167,7 +167,7 @@ public class InventoryControl {
      */
     public static void performInventoryAudit() {
         // Ensure only authorized users can perform audit
-        if (!SFWE301Fall24Project_Team4.currentUser.getRole().equals("Pharmacy Manager")) {
+        if (!PMS.currentUser.getRole().equals("Pharmacy Manager")) {
             System.out.println("Access denied. Only Pharmacy Managers can perform inventory audits.");
             return;
         }
@@ -193,7 +193,7 @@ public class InventoryControl {
 
                 // Log the adjustment
                 ReportGeneration.logInventoryAudit(
-                        SFWE301Fall24Project_Team4.currentUser,
+                        PMS.currentUser,
                         item,
                         oldQuantity,
                         physicalCount,
@@ -210,8 +210,8 @@ public class InventoryControl {
      */
     public static void adjustInventory() {
         // Ensure only authorized users can adjust inventory
-        if (!SFWE301Fall24Project_Team4.currentUser.getRole().equals("Pharmacy Manager")
-                && !SFWE301Fall24Project_Team4.currentUser.getRole().equals("Pharmacist")) {
+        if (!PMS.currentUser.getRole().equals("Pharmacy Manager")
+                && !PMS.currentUser.getRole().equals("Pharmacist")) {
             System.out.println("Access denied. Only Pharmacy Managers or Pharmacists can adjust inventory.");
             return;
         }
@@ -252,7 +252,7 @@ public class InventoryControl {
         String reason = scanner.nextLine();
 
         ReportGeneration.logInventoryAdjustment(
-                SFWE301Fall24Project_Team4.currentUser,
+                PMS.currentUser,
                 item,
                 oldQuantity,
                 newQuantity,
@@ -303,8 +303,8 @@ public class InventoryControl {
      */
     public static void receiveShipment() {
         // Ensure only authorized users can receive shipments
-        if (!SFWE301Fall24Project_Team4.currentUser.getRole().equals("Pharmacy Manager")
-                && !SFWE301Fall24Project_Team4.currentUser.getRole().equals("Pharmacist")) {
+        if (!PMS.currentUser.getRole().equals("Pharmacy Manager")
+                && !PMS.currentUser.getRole().equals("Pharmacist")) {
             System.out.println("Access denied. Only Pharmacy Managers or Pharmacists can receive shipments.");
             return;
         }
@@ -340,7 +340,7 @@ public class InventoryControl {
             return;
         }
         int supplierId = scanner.nextInt();
-        Supplier supplier = SFWE301Fall24Project_Team4.getSupplierByID(supplierId);
+        Supplier supplier = PMS.getSupplierByID(supplierId);
         if (supplier == null) {
             System.out.println("Supplier not found. Please ensure the supplier ID is correct.");
             return;
@@ -363,7 +363,7 @@ public class InventoryControl {
 
         // Log the shipment receipt
         ReportGeneration.logShipmentReceipt(
-                SFWE301Fall24Project_Team4.currentUser,
+                PMS.currentUser,
                 item,
                 quantityReceived,
                 shipmentDate

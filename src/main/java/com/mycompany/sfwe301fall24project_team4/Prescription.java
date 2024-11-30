@@ -70,7 +70,7 @@ public class Prescription {
 
         // Log the prescription filling
         ReportGeneration.logPrescriptionFilling(
-                SFWE301Fall24Project_Team4.currentUser,
+                PMS.currentUser,
                 this,
                 oldQuantity,
                 item.getQuantity()

@@ -32,3 +32,5 @@ Bill,1,2024-11-29,Purchase from supplier,1000,24344,50,5001
 Bill,1,2024-11-29,Purchase from supplier,1001,24333,50,5001
 Tom,555,2024-10-01,Item Returned,24344,8
 Bill,1,2024-11-29,Purchase from supplier,1002,24333,50,5001
+Bill,1,2024-11-30,Purchase from supplier,1000,24344,50,5001
+Bill,1,2024-11-30,Purchase from supplier,1001,24333,50,5001

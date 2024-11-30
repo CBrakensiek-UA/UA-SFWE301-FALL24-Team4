@@ -1,5 +1,3 @@
-// SFWE301Fall24Project_Team4.java
-
 package com.mycompany.sfwe301fall24project_team4;
 
 import java.time.LocalDate;
@@ -11,7 +9,7 @@ import java.util.Scanner;
  * implemented, will be run to test the functionality of InventoryControl and
  * ReportGeneration.
  */
-public class SFWE301Fall24Project_Team4 {
+public class PMS {
 
     public static PharmacyStaff currentUser = new PharmacyStaff("Bill", 1, "Pharmacy Manager");
     public static ArrayList<Supplier> suppliers = new ArrayList<>();
