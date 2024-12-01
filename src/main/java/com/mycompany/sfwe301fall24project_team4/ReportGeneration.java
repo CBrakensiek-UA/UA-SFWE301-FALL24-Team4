@@ -556,7 +556,7 @@ public class ReportGeneration {
             }
 
             try {
-                if (transaction[1].equals(id)) { // is this the right user?
+                if (Integer.parseInt(transaction[1]) == id) { // is this the right user?
                     switch (transaction[3]) {
                         case "logged in":
                             userActivityReport.addContent("On " + transaction[2] + ", " + transaction[0] + " (ID: "

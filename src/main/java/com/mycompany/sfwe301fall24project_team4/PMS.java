@@ -380,7 +380,7 @@ public class PMS {
                         break;
                     }
                     int id = scnr.nextInt();
-                    ReportGeneration.generateExpirationDataReport(id);
+                    ReportGeneration.generateUserActivityReport(id);
                     break;
                 default:
                     System.out.println("Invalid option.");
