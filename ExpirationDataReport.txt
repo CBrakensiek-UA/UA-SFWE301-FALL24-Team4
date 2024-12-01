@@ -1,3 +1,2 @@
-Expiration Data Report (Items expiring within 25 days) (Generated on 2024-11-27)
+Expiration Data Report (Items expiring within 1 days) (Generated on 2024-12-01)
 
-Med1 (ID: 24333) - Expires on: 2024-11-30

@@ -14,6 +14,10 @@ public class ReportGeneration {
     private static final ExternalFile financialReport = new ExternalFile("FinancialReport.txt");
     private static final ExternalFile inventoryReport = new ExternalFile("InventoryReport.txt");
     private static final ExternalFile transactionReport = new ExternalFile("TransactionReport.txt");
+    private static final ExternalFile criticalStockReport = new ExternalFile("CriticalStockLevelsReport.txt");
+    private static final ExternalFile expirationReport = new ExternalFile("ExpirationDataReport.txt");
+    private static final ExternalFile purchaseReport = new ExternalFile("PurchaseReport.txt");
+    private static final ExternalFile userActivityReport = new ExternalFile("UserActivityReport.txt");
 
     /**
      * Logs a user login event.
@@ -243,8 +247,6 @@ public class ReportGeneration {
      * @param month The month of the report.
      */
     public static void generateFinancialReport(int year, int month) {
-        // Placeholder implementation
-        // Implement based on financial data tracking
         LocalDate start = LocalDate.of(year, month, 1);
         LocalDate end = LocalDate.of(year, month, start.lengthOfMonth());
 
@@ -419,7 +421,6 @@ public class ReportGeneration {
      * Generates a critical stock levels report.
      */
     public static void generateCriticalStockLevelsReport() {
-        ExternalFile criticalStockReport = new ExternalFile("CriticalStockLevelsReport.txt");
         criticalStockReport.clearContent();
         criticalStockReport.addContent("Critical Stock Levels Report (Generated on " + LocalDate.now() + ")");
         criticalStockReport.addContent("");
@@ -440,7 +441,6 @@ public class ReportGeneration {
      * @param days The number of days to check for expiration.
      */
     public static void generateExpirationDataReport(int days) {
-        ExternalFile expirationReport = new ExternalFile("ExpirationDataReport.txt");
         expirationReport.clearContent();
         expirationReport.addContent("Expiration Data Report (Items expiring within " + days + " days) (Generated on " + LocalDate.now() + ")");
         expirationReport.addContent("");
@@ -492,7 +492,6 @@ public class ReportGeneration {
     public static void generatePurchaseReport(LocalDate start, LocalDate end) {
         transactionLog.readFromFile();
         ArrayList<String> transactions = transactionLog.getContents();
-        ExternalFile purchaseReport = new ExternalFile("PurchaseReport.txt");
         purchaseReport.clearContent();
         purchaseReport.addContent("Purchase Report from " + start + " to " + end + " (generated " + LocalDate.now() + ")");
         purchaseReport.addContent("");
@@ -533,4 +532,92 @@ public class ReportGeneration {
 
         System.out.println("Purchase Report generated successfully.");
     }
+    
+    
+     /**
+     * Generates an activity report for a specific user
+     *
+     * @param id The user id
+     */
+    public static void generateUserActivityReport(int id) {
+        transactionLog.readFromFile();
+        ArrayList<String> transactions = transactionLog.getContents();
+        userActivityReport.clearContent();
+        userActivityReport.addContent("User Activity Report for user ID " + id + " (generated " + LocalDate.now() + ")");
+        userActivityReport.addContent("");
+
+        for (String strTransaction : transactions) {
+            String[] transaction = strTransaction.split(",");
+
+            // Ensure the transaction has enough fields to prevent ArrayIndexOutOfBoundsException
+            if (transaction.length < 4) {
+                // Skip malformed entries
+                continue;
+            }
+
+            try {
+                if (transaction[1].equals(id)) { // is this the right user?
+                    switch (transaction[3]) {
+                        case "logged in":
+                            userActivityReport.addContent("On " + transaction[2] + ", " + transaction[0] + " (ID: "
+                                    + transaction[1] + ") logged into the system.");
+                            break;
+                        case "logged out":
+                            userActivityReport.addContent("On " + transaction[2] + ", " + transaction[0] + " (ID: "
+                                    + transaction[1] + ") logged out of the system.");
+                            break;
+                        case "Inventory Adjustment":
+                        case "Inventory Audit":
+                            if (transaction.length >= 9) {
+                                userActivityReport.addContent("On " + transaction[2] + ", " + transaction[0] + " (ID: "
+                                        + transaction[1] + ") performed a " + transaction[3] + " on " + transaction[4] + " (ID: "
+                                        + transaction[5] + "). " + transaction[6] + ", " + transaction[7] + ". Reason: '"
+                                        + transaction[8].substring(8) + "'.");
+                            }
+                            break;
+                        case "Purchase from supplier":
+                            if (transaction.length >= 8) {
+                                InventoryItem item = InventoryControl.getItemFromID(Integer.parseInt(transaction[5]));
+                                Supplier supplier = PMS.getSupplierByID(Integer.parseInt(transaction[7]));
+                                String supplierName = (supplier != null) ? supplier.getName() : "Unknown Supplier";
+                                String itemName = (item != null) ? item.getName() : "Unknown Item";
+                                userActivityReport.addContent("On " + transaction[2] + ", " + transaction[0] + " (ID: "
+                                        + transaction[1] + ") made a purchase (ID: " + transaction[4]
+                                        + ") for " + transaction[6] + " units of " + itemName + " (ID: " + transaction[5]
+                                        + ") from supplier " + supplierName + " (ID: " + transaction[7] + ").");
+                            }
+                            break;
+                        case "Prescription Filled":
+                            if (transaction.length >= 7) {
+                                InventoryItem item = InventoryControl.getItemFromID(Integer.parseInt(transaction[5]));
+                                String itemName = (item != null) ? item.getName() : "Unknown Item";
+                                userActivityReport.addContent("On " + transaction[2] + ", " + transaction[0] + " (ID: "
+                                        + transaction[1] + ") filled Prescription " + transaction[4] + ", dispensing "
+                                        + transaction[6] + " units of " + itemName + " (ID: " + transaction[5] + ").");
+                            }
+                            break;
+                        case "Shipment Received":
+                            if (transaction.length >= 6) {
+                                InventoryItem item = InventoryControl.getItemFromID(Integer.parseInt(transaction[4]));
+                                String itemName = (item != null) ? item.getName() : "Unknown Item";
+                                userActivityReport.addContent("On " + transaction[2] + ", " + transaction[0] + " (ID: "
+                                        + transaction[1] + ") received a shipment of " + transaction[5] + " units of "
+                                        + itemName + " (ID: " + transaction[4] + ").");
+                            }
+                            break;
+                        default:
+                            // Handle other transaction types if any
+                            break;
+                    }
+                }
+            } catch (Exception e) {
+                // Skip entries with parsing issues
+                continue;
+            }
+        }
+        userActivityReport.writeToFile();
+
+        System.out.println("User Activity Report generated successfully.");
+    }
+    
 }

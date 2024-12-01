@@ -93,6 +93,7 @@ public class PMS {
         System.out.println(" 23) Generate critical stock levels report");
         System.out.println(" 24) Generate expiration data report");
         System.out.println(" 25) Generate inventory valuation Report");
+        System.out.println(" 26) Generate user activity report");
         System.out.print("Option: ");
     }
 
@@ -115,11 +116,12 @@ public class PMS {
 
         System.out.println("Created testing data.\n");
         System.out.println("Welcome to the Pharmacy Management System (Inventory Control and Report Generation)!");
-
+        
+        InventoryControl.automaticChecks();
+        
         int choice = -1;
         int subchoice = -1;
         while (choice != 0) {
-            InventoryControl.automaticChecks();
             displayOptions();
             if (!scnr.hasNextInt()) {
                 System.out.println("Invalid input. Please enter a number corresponding to the options.");
@@ -369,6 +371,16 @@ public class PMS {
                     break;
                 case 25:
                     ReportGeneration.generateInventoryValuationReport();
+                    break;
+                case 26:
+                    System.out.print("Enter the user ID: ");
+                    if (!scnr.hasNextInt()) {
+                        System.out.println("Invalid input. User ID must be an integer.");
+                        scnr.next(); // Clear invalid input
+                        break;
+                    }
+                    int id = scnr.nextInt();
+                    ReportGeneration.generateExpirationDataReport(id);
                     break;
                 default:
                     System.out.println("Invalid option.");
