@@ -1,2 +1,29 @@
-Purchase Report from 2023-01-01 to 2023-01-31 (generated 2024-11-27)
+Purchase Report from 2024-11-01 to 2024-11-30 (generated 2024-12-02)
 
+On 2024-11-27, Bill (ID: 1) made a purchase (ID: 1000) for 50 units of Skittles (ID: 24344) from supplier HealthSuppliers Inc. (ID: 5001).
+On 2024-11-27, Bill (ID: 1) made a purchase (ID: 1001) for 50 units of Med1 (ID: 24333) from supplier HealthSuppliers Inc. (ID: 5001).
+On 2024-11-27, Bill (ID: 1) made a purchase (ID: 1002) for 50 units of Skittles (ID: 24344) from supplier HealthSuppliers Inc. (ID: 5001).
+On 2024-11-27, Bill (ID: 1) made a purchase (ID: 1003) for 50 units of Med1 (ID: 24333) from supplier HealthSuppliers Inc. (ID: 5001).
+On 2024-11-27, Bill (ID: 1) made a purchase (ID: 1004) for 50 units of Skittles (ID: 24344) from supplier HealthSuppliers Inc. (ID: 5001).
+On 2024-11-27, Bill (ID: 1) made a purchase (ID: 1005) for 50 units of Med1 (ID: 24333) from supplier HealthSuppliers Inc. (ID: 5001).
+On 2024-11-27, Bill (ID: 1) made a purchase (ID: 1006) for 50 units of Skittles (ID: 24344) from supplier HealthSuppliers Inc. (ID: 5001).
+On 2024-11-27, Bill (ID: 1) made a purchase (ID: 1007) for 50 units of Med1 (ID: 24333) from supplier HealthSuppliers Inc. (ID: 5001).
+On 2024-11-27, Bill (ID: 1) made a purchase (ID: 1008) for 50 units of Skittles (ID: 24344) from supplier HealthSuppliers Inc. (ID: 5001).
+On 2024-11-27, Bill (ID: 1) made a purchase (ID: 1009) for 50 units of Med1 (ID: 24333) from supplier HealthSuppliers Inc. (ID: 5001).
+On 2024-11-27, Bill (ID: 1) made a purchase (ID: 1010) for 50 units of Skittles (ID: 24344) from supplier HealthSuppliers Inc. (ID: 5001).
+On 2024-11-27, Bill (ID: 1) made a purchase (ID: 1011) for 50 units of Med1 (ID: 24333) from supplier HealthSuppliers Inc. (ID: 5001).
+On 2024-11-27, Bill (ID: 1) made a purchase (ID: 1012) for 50 units of Skittles (ID: 24344) from supplier HealthSuppliers Inc. (ID: 5001).
+On 2024-11-27, Bill (ID: 1) made a purchase (ID: 1013) for 50 units of Med1 (ID: 24333) from supplier HealthSuppliers Inc. (ID: 5001).
+On 2024-11-29, Bill (ID: 1) made a purchase (ID: 1000) for 50 units of Skittles (ID: 24344) from supplier HealthSuppliers Inc. (ID: 5001).
+On 2024-11-29, Bill (ID: 1) made a purchase (ID: 1001) for 50 units of Med1 (ID: 24333) from supplier HealthSuppliers Inc. (ID: 5001).
+On 2024-11-29, Bill (ID: 1) made a purchase (ID: 1002) for 50 units of Skittles (ID: 24344) from supplier HealthSuppliers Inc. (ID: 5001).
+On 2024-11-29, Bill (ID: 1) made a purchase (ID: 1003) for 50 units of Med1 (ID: 24333) from supplier HealthSuppliers Inc. (ID: 5001).
+On 2024-11-29, Bill (ID: 1) made a purchase (ID: 1004) for 50 units of Skittles (ID: 24344) from supplier HealthSuppliers Inc. (ID: 5001).
+On 2024-11-29, Bill (ID: 1) made a purchase (ID: 1005) for 50 units of Med1 (ID: 24333) from supplier HealthSuppliers Inc. (ID: 5001).
+On 2024-11-29, Bill (ID: 1) made a purchase (ID: 1006) for 50 units of Skittles (ID: 24344) from supplier HealthSuppliers Inc. (ID: 5001).
+On 2024-11-29, Bill (ID: 1) made a purchase (ID: 1007) for 50 units of Med1 (ID: 24333) from supplier HealthSuppliers Inc. (ID: 5001).
+On 2024-11-29, Bill (ID: 1) made a purchase (ID: 1000) for 50 units of Skittles (ID: 24344) from supplier HealthSuppliers Inc. (ID: 5001).
+On 2024-11-29, Bill (ID: 1) made a purchase (ID: 1001) for 50 units of Med1 (ID: 24333) from supplier HealthSuppliers Inc. (ID: 5001).
+On 2024-11-29, Bill (ID: 1) made a purchase (ID: 1002) for 50 units of Med1 (ID: 24333) from supplier HealthSuppliers Inc. (ID: 5001).
+On 2024-11-30, Bill (ID: 1) made a purchase (ID: 1000) for 50 units of Skittles (ID: 24344) from supplier HealthSuppliers Inc. (ID: 5001).
+On 2024-11-30, Bill (ID: 1) made a purchase (ID: 1001) for 50 units of Med1 (ID: 24333) from supplier HealthSuppliers Inc. (ID: 5001).
