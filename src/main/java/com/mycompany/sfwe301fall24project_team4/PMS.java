@@ -72,13 +72,14 @@ public class PMS {
         InventoryControl.addPrescription(prescription1);
         InventoryControl.addPrescription(prescription2);
     }
-
+    
+    
     /**
      * Handles the generation of the Monthly Financial Report.
      *
      * @param scnr Scanner object for user input.
      */
-    private static void handleMonthlyFinancialReport(Scanner scnr) {
+    /*private static void handleMonthlyFinancialReport(Scanner scnr) {
         // Check if the current user is a Pharmacy Manager
         if (!currentUser.getRole().equalsIgnoreCase("Pharmacy Manager")) {
             System.out.println("Access denied. Only Pharmacy Managers can generate financial reports.");
@@ -107,7 +108,7 @@ public class PMS {
         }
 
         ReportGeneration.generateMonthlyFinancialReport(year, month);
-    }
+    }*/
 
     /**
      * Displays the main menu options.
@@ -133,7 +134,6 @@ public class PMS {
         System.out.println(" 28) Generate sales trend analysis report");
         System.out.println(" 29) Generate prescription fulfillment report");
         System.out.println(" 30) Generate inventory turnover rate report");
-        System.out.println(" 31) Generate Monthly Financial Report"); // New Option
         System.out.print("Option: ");
     }
 
@@ -203,14 +203,63 @@ public class PMS {
                     InventoryControl.returnItem(testUser2);
                     break;
                 case 20:
-                    // Financial Report Generation has been removed or relocated
-                    System.out.println("Financial Report Generation has been moved to separate functionalities or is not yet implemented.");
+                    // Implement Financial Report Generation
+                    System.out.println("Choose a suboption:");
+                    System.out.println("  1) Monthly financial report");
+                    System.out.println("  2) Custom time range financial report");
+                    System.out.print("Option: ");
+                    if (!scnr.hasNextInt()) {
+                        System.out.println("Invalid input. Returning to main menu.");
+                        scnr.next(); // Clear invalid input
+                        break;
+                    }
+                    subchoice = scnr.nextInt();
+
+                    switch (subchoice) {
+                        case 1:
+                            System.out.print("Enter year: ");
+                            if (!scnr.hasNextInt()) {
+                                System.out.println("Invalid input. Year must be an integer.");
+                                scnr.next(); // Clear invalid input
+                                break;
+                            }
+                            int finYear = scnr.nextInt();
+                            System.out.print("Enter month (1-12): ");
+                            if (!scnr.hasNextInt()) {
+                                System.out.println("Invalid input. Month must be an integer between 1 and 12.");
+                                scnr.next(); // Clear invalid input
+                                break;
+                            }
+                            int finMonth = scnr.nextInt();
+                            if (finMonth < 1 || finMonth > 12) {
+                                System.out.println("Invalid month. Please enter a value between 1 and 12.");
+                                break;
+                            }
+                            ReportGeneration.generateFinancialReport(finYear, finMonth);
+                            break;
+                        case 2:
+                            System.out.print("Enter start date (YYYY-MM-DD): ");
+                            String finStart = scnr.next();
+                            System.out.print("Enter end date (YYYY-MM-DD): ");
+                            String finEnd = scnr.next();
+                            try {
+                                LocalDate start = LocalDate.parse(finStart);
+                                LocalDate end = LocalDate.parse(finEnd);
+                                ReportGeneration.generateFinancialReport(start, end);
+                            } catch (Exception e) {
+                                System.out.println("Invalid date format. Please use YYYY-MM-DD.");
+                            }
+                            break;
+                        default:
+                            System.out.println("Invalid suboption.");
+                            break;
+                    }
                     break;
                 case 21:
                     // Implement Inventory Report Generation
                     System.out.println("Choose a suboption:");
                     System.out.println("  1) Monthly inventory report");
-                    System.out.println("  2) Custom timerange inventory report");
+                    System.out.println("  2) Custom time range inventory report");
                     System.out.print("Option: ");
                     if (!scnr.hasNextInt()) {
                         System.out.println("Invalid input. Returning to main menu.");
@@ -263,7 +312,7 @@ public class PMS {
                     // Implement Transaction Report Generation
                     System.out.println("Choose a suboption:");
                     System.out.println("  1) Monthly transaction report");
-                    System.out.println("  2) Custom timerange transaction report");
+                    System.out.println("  2) Custom time range transaction report");
                     System.out.print("Option: ");
                     if (!scnr.hasNextInt()) {
                         System.out.println("Invalid input. Returning to main menu.");
@@ -435,10 +484,6 @@ public class PMS {
                     } catch (Exception e) {
                         System.out.println("Invalid date format. Please use YYYY-MM-DD.");
                     }
-                    break;
-                case 31:
-                    // Generate Monthly Financial Report
-                    handleMonthlyFinancialReport(scnr);
                     break;
                 default:
                     System.out.println("Invalid option.");

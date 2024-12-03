@@ -24,7 +24,6 @@ public class ReportGeneration {
     private static final ExternalFile salesTrendReport = new ExternalFile("SalesTrendAnalysisReport.txt");
     private static final ExternalFile prescriptionFulfillmentReport = new ExternalFile("PrescriptionFulfillmentReport.txt");
     private static final ExternalFile turnoverReport = new ExternalFile("InventoryTurnoverRateReport.txt");
-    private static final ExternalFile financialMonthlyReport = new ExternalFile("FinancialMonthlyReport.txt");
 
     /**
      * Logs a user login event.
@@ -854,12 +853,26 @@ public class ReportGeneration {
      * @param year  The year for the report.
      * @param month The month for the report (1-12).
      */
-    public static void generateMonthlyFinancialReport(int year, int month) {
+    public static void generateFinancialReport(int year, int month) {
+        LocalDate start = LocalDate.of(year, month, 1);
+        LocalDate end = LocalDate.of(year, month, start.lengthOfMonth());
+
+        generateFinancialReport(start, end);
+    }
+    
+    /**
+     * Generates a Monthly Financial Report.
+     * Includes Total Revenue, Expense Summaries, Profit Margins, and Customer Transactions.
+     *
+     * @param start The start date.
+     * @param end The end date.
+     */
+    public static void generateFinancialReport(LocalDate start, LocalDate end) {
         transactionLog.readFromFile();
         ArrayList<String> transactions = transactionLog.getContents();
-        financialMonthlyReport.clearContent();
-        financialMonthlyReport.addContent("Monthly Financial Report for " + YearMonth.of(year, month) + " (Generated on " + LocalDate.now() + ")");
-        financialMonthlyReport.addContent("");
+        financialReport.clearContent();
+        financialReport.addContent("Monthly Financial Report for (" + start + "," + end + ")" + " (Generated on " + LocalDate.now() + ")");
+        financialReport.addContent("");
 
         double totalRevenuePrescription = 0.0;
         double totalRevenueNonPrescription = 0.0;
@@ -877,7 +890,7 @@ public class ReportGeneration {
 
             try {
                 LocalDate transactionDate = LocalDate.parse(transaction[2]);
-                if (transactionDate.getYear() == year && transactionDate.getMonthValue() == month) {
+                if (!transactionDate.isBefore(start) && !transactionDate.isAfter(end)) {
                     String eventType = transaction[3].trim();
                     String paymentType = transaction[7].trim();
                     double amount = Double.parseDouble(transaction[8].trim());
@@ -916,29 +929,29 @@ public class ReportGeneration {
         double profitMargins = totalRevenue - totalExpenses;
 
         // Writing the report
-        financialMonthlyReport.addContent("Total Revenue:");
-        financialMonthlyReport.addContent(String.format("  Prescription Sales: $%.2f", totalRevenuePrescription));
-        financialMonthlyReport.addContent(String.format("  Non-Prescription Sales: $%.2f", totalRevenueNonPrescription));
-        financialMonthlyReport.addContent(String.format("  Total Revenue: $%.2f", totalRevenue));
-        financialMonthlyReport.addContent("");
+        financialReport.addContent("Total Revenue:");
+        financialReport.addContent(String.format("  Prescription Sales: $%.2f", totalRevenuePrescription));
+        financialReport.addContent(String.format("  Non-Prescription Sales: $%.2f", totalRevenueNonPrescription));
+        financialReport.addContent(String.format("  Total Revenue: $%.2f", totalRevenue));
+        financialReport.addContent("");
 
-        financialMonthlyReport.addContent("Expense Summaries:");
-        financialMonthlyReport.addContent(String.format("  Inventory Purchases: $%.2f", totalExpenses));
-        financialMonthlyReport.addContent(String.format("  Total Expenses: $%.2f", totalExpenses));
-        financialMonthlyReport.addContent("");
+        financialReport.addContent("Expense Summaries:");
+        financialReport.addContent(String.format("  Inventory Purchases: $%.2f", totalExpenses));
+        financialReport.addContent(String.format("  Total Expenses: $%.2f", totalExpenses));
+        financialReport.addContent("");
 
-        financialMonthlyReport.addContent(String.format("Profit Margins: $%.2f", profitMargins));
-        financialMonthlyReport.addContent("");
+        financialReport.addContent(String.format("Profit Margins: $%.2f", profitMargins));
+        financialReport.addContent("");
 
-        financialMonthlyReport.addContent("Customer Transactions by Payment Type:");
-        financialMonthlyReport.addContent(String.format("  Cash Transactions: %d", transactionsCash));
-        financialMonthlyReport.addContent(String.format("  Card Transactions: %d", transactionsCard));
-        financialMonthlyReport.addContent(String.format("  Insurance Transactions: %d", transactionsInsurance));
-        financialMonthlyReport.addContent(String.format("  Total Transactions: %d", transactionsCash + transactionsCard + transactionsInsurance));
-        financialMonthlyReport.addContent("");
+        financialReport.addContent("Customer Transactions by Payment Type:");
+        financialReport.addContent(String.format("  Cash Transactions: %d", transactionsCash));
+        financialReport.addContent(String.format("  Card Transactions: %d", transactionsCard));
+        financialReport.addContent(String.format("  Insurance Transactions: %d", transactionsInsurance));
+        financialReport.addContent(String.format("  Total Transactions: %d", transactionsCash + transactionsCard + transactionsInsurance));
+        financialReport.addContent("");
 
-        financialMonthlyReport.writeToFile();
+        financialReport.writeToFile();
 
-        System.out.println("Monthly Financial Report for " + YearMonth.of(year, month) + " generated successfully.");
+        System.out.println("Financial Report for (" + start + "," + end + ")" + " generated successfully.");
     }
 }
