@@ -1,7 +1,10 @@
 package com.mycompany.sfwe301fall24project_team4;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class represents the Report Generation Subsystem. This subsystem manages
@@ -18,6 +21,8 @@ public class ReportGeneration {
     private static final ExternalFile expirationReport = new ExternalFile("ExpirationDataReport.txt");
     private static final ExternalFile purchaseReport = new ExternalFile("PurchaseReport.txt");
     private static final ExternalFile userActivityReport = new ExternalFile("UserActivityReport.txt");
+    private static final ExternalFile salesTrendReport = new ExternalFile("SalesTrendAnalysisReport.txt");
+    private static final ExternalFile prescriptionFulfillmentReport = new ExternalFile("PrescriptionFulfillmentReport.txt");
 
     /**
      * Logs a user login event.
@@ -88,6 +93,95 @@ public class ReportGeneration {
         transactionLog.readFromFile();
         transactionLog.addContent(activity);
         transactionLog.writeToFile();
+    }
+
+     /**
+     * Generates a Sales Trend Analysis Report.
+     * Analyzes total sales per month over a specified period.
+     *
+     * @param start The start date for the analysis.
+     * @param end   The end date for the analysis.
+     */
+    public static void generateSalesTrendAnalysisReport(LocalDate start, LocalDate end) {
+        transactionLog.readFromFile();
+        ArrayList<String> transactions = transactionLog.getContents();
+        salesTrendReport.clearContent();
+        salesTrendReport.addContent("Sales Trend Analysis Report from " + start + " to " + end + " (Generated on " + LocalDate.now() + ")");
+        salesTrendReport.addContent("");
+
+        // Map to hold YearMonth and corresponding total sales
+        Map<YearMonth, Double> salesData = new HashMap<>();
+
+        for (String strTransaction : transactions) {
+            String[] transaction = strTransaction.split(",");
+
+            // Expected format for purchase transactions:
+            // userName,userID,date,eventType,purchaseID,itemID,quantity,supplierID
+
+            if (transaction.length < 8) {
+                continue; // Skip malformed entries
+            }
+
+            try {
+                LocalDate transactionDate = LocalDate.parse(transaction[2]);
+                if (!transactionDate.isBefore(start) && !transactionDate.isAfter(end)) { // Within date range
+                    if (transaction[3].equals("Purchase from supplier")) {
+                        int itemID = Integer.parseInt(transaction[5]);
+                        int quantity = Integer.parseInt(transaction[6]);
+                        InventoryItem item = InventoryControl.getItemFromID(itemID);
+                        if (item != null) {
+                            double salesAmount = item.getCost() * quantity;
+                            YearMonth ym = YearMonth.from(transactionDate);
+                            salesData.put(ym, salesData.getOrDefault(ym, 0.0) + salesAmount);
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                // Skip entries with parsing issues
+                continue;
+            }
+        }
+
+        // Sort the data by YearMonth
+        ArrayList<YearMonth> sortedMonths = new ArrayList<>(salesData.keySet());
+        sortedMonths.sort(null);
+
+        // Add sales data to the report
+        salesTrendReport.addContent(String.format("%-15s %-15s", "Month", "Total Sales ($)"));
+        salesTrendReport.addContent("-----------------------------------");
+        for (YearMonth ym : sortedMonths) {
+            salesTrendReport.addContent(String.format("%-15s %-15.2f", ym, salesData.get(ym)));
+        }
+
+        // Calculate Growth Rate (Year-over-Year)
+        salesTrendReport.addContent("");
+        salesTrendReport.addContent("Year-over-Year Growth Rates:");
+        salesTrendReport.addContent("-----------------------------------");
+        Map<Integer, Double> yearlySales = new HashMap<>();
+        for (Map.Entry<YearMonth, Double> entry : salesData.entrySet()) {
+            int year = entry.getKey().getYear();
+            yearlySales.put(year, yearlySales.getOrDefault(year, 0.0) + entry.getValue());
+        }
+
+        ArrayList<Integer> sortedYears = new ArrayList<>(yearlySales.keySet());
+        sortedYears.sort(null);
+
+        salesTrendReport.addContent(String.format("%-10s %-20s", "Year", "Total Sales ($)"));
+        for (int i = 0; i < sortedYears.size(); i++) {
+            int year = sortedYears.get(i);
+            double totalSales = yearlySales.get(year);
+            salesTrendReport.addContent(String.format("%-10d %-20.2f", year, totalSales));
+            if (i > 0) {
+                int prevYear = sortedYears.get(i - 1);
+                double prevSales = yearlySales.get(prevYear);
+                double growthRate = ((totalSales - prevSales) / prevSales) * 100;
+                salesTrendReport.addContent(String.format("Growth Rate from %d to %d: %.2f%%", prevYear, year, growthRate));
+            }
+        }
+
+        salesTrendReport.writeToFile();
+
+        System.out.println("Sales Trend Analysis Report generated successfully.");
     }
 
     /**
@@ -238,30 +332,6 @@ public class ReportGeneration {
         transactionLog.readFromFile();
         transactionLog.addContent(activity);
         transactionLog.writeToFile();
-    }
-
-    /**
-     * Generates a financial report for a specific month.
-     *
-     * @param year  The year of the report.
-     * @param month The month of the report.
-     */
-    public static void generateFinancialReport(int year, int month) {
-        LocalDate start = LocalDate.of(year, month, 1);
-        LocalDate end = LocalDate.of(year, month, start.lengthOfMonth());
-
-        generateFinancialReport(start, end);
-    }
-    /**
-     * Generates a financial report for a specific date range.
-     *
-     * @param start The start date.
-     * @param end   The end date.
-     */
-    public static void generateFinancialReport(LocalDate start, LocalDate end) {
-        // Placeholder implementation
-        // Implement based on financial data tracking
-        System.out.println("Financial Report Generation is not yet implemented.");
     }
 
     /**
@@ -458,28 +528,55 @@ public class ReportGeneration {
     }
 
     /**
-     * Generates an inventory valuation report.
+     * Generates an Inventory Valuation Report.
+     * Calculates the total value of the inventory at current stock levels.
      */
     public static void generateInventoryValuationReport() {
-        int totalValuation = InventoryControl.calculateInventoryValuation();
-        financialReport.clearContent();
-        financialReport.addContent("Inventory Valuation Report (Generated on " + LocalDate.now() + ")");
-        financialReport.addContent("");
-        financialReport.addContent("Total Inventory Valuation: $" + (totalValuation / 100.0));
-        financialReport.writeToFile();
+        inventoryReport.readFromFile(); // Assuming inventory data is read from a file or managed in memory
+        ArrayList<InventoryItem> inventoryItems = InventoryControl.inventory; // Access the inventory list
+        
+        double totalValuation = 0.0;
+        inventoryReport.clearContent();
+        inventoryReport.addContent("Inventory Valuation Report (Generated on " + LocalDate.now() + ")");
+        inventoryReport.addContent("");
+        inventoryReport.addContent(String.format("%-20s %-10s %-10s %-15s", "Medication", "ID", "Quantity", "Total Value ($)"));
+        inventoryReport.addContent("-------------------------------------------------------------------");
+        
+        for (InventoryItem item : inventoryItems) {
+            double itemTotalValue = item.getQuantity() * item.getCost();
+            totalValuation += itemTotalValue;
+            inventoryReport.addContent(String.format("%-20s %-10d %-10d %-15.2f", 
+                item.getName(), item.getID(), item.getQuantity(), itemTotalValue));
+        }
+        
+        inventoryReport.addContent("");
+        inventoryReport.addContent(String.format("Total Inventory Valuation: $%.2f", totalValuation));
+        
+        inventoryReport.writeToFile();
+        
         System.out.println("Inventory Valuation Report generated successfully.");
     }
-
+    
     /**
-     * Generates a purchase report for a specific month.
+     * Generates a **Monthly Purchase Report**.
      *
      * @param year  The year of the report.
      * @param month The month of the report.
      */
-    public static void generatePurchaseReport(int year, int month) {
+    public static void generateMonthlyPurchaseReport(int year, int month) {
         LocalDate start = LocalDate.of(year, month, 1);
         LocalDate end = LocalDate.of(year, month, start.lengthOfMonth());
 
+        generatePurchaseReport(start, end);
+    }
+
+    /**
+     * Generates a **Custom Time Range Purchase Report**.
+     *
+     * @param start The start date of the report.
+     * @param end   The end date of the report.
+     */
+    public static void generateCustomTimeRangePurchaseReport(LocalDate start, LocalDate end) {
         generatePurchaseReport(start, end);
     }
 
@@ -618,6 +715,134 @@ public class ReportGeneration {
         userActivityReport.writeToFile();
 
         System.out.println("User Activity Report generated successfully.");
+    }
+
+    /**
+     * Generates a Prescription Fulfillment Report.
+     * Provides metrics such as average processing time for filling prescriptions.
+     *
+     * @param start The start date for the analysis.
+     * @param end   The end date for the analysis.
+     */
+    public static void generatePrescriptionFulfillmentReport(LocalDate start, LocalDate end) {
+        transactionLog.readFromFile();
+        ArrayList<String> transactions = transactionLog.getContents();
+        prescriptionFulfillmentReport.clearContent();
+        prescriptionFulfillmentReport.addContent("Prescription Fulfillment Report from " + start + " to " + end + " (Generated on " + LocalDate.now() + ")");
+        prescriptionFulfillmentReport.addContent("");
+
+        int totalPrescriptions = 0;
+        long totalProcessingTime = 0; // in days
+
+        for (String strTransaction : transactions) {
+            String[] transaction = strTransaction.split(",");
+
+            // Expected format for prescription fulfillment transactions:
+            // userName,userID,date,eventType,prescriptionID,medicationID,quantity,isFilled,filledTime
+
+            if (transaction.length < 9) {
+                continue; // Skip malformed entries
+            }
+
+            try {
+                LocalDate transactionDate = LocalDate.parse(transaction[2]);
+                LocalDate filledDate = LocalDate.parse(transaction[8]); // Assuming filledTime is stored as YYYY-MM-DD
+
+                if (!transactionDate.isBefore(start) && !transactionDate.isAfter(end) &&
+                    transaction[3].equals("Prescription Filled")) {
+                    long daysToFill = java.time.temporal.ChronoUnit.DAYS.between(transactionDate, filledDate);
+                    totalPrescriptions++;
+                    totalProcessingTime += daysToFill;
+                }
+            } catch (Exception e) {
+                // Skip entries with parsing issues
+                continue;
+            }
+        }
+
+        prescriptionFulfillmentReport.addContent("Total Prescriptions Filled: " + totalPrescriptions);
+        if (totalPrescriptions > 0) {
+            double averageProcessingTime = (double) totalProcessingTime / totalPrescriptions;
+            prescriptionFulfillmentReport.addContent(String.format("Average Processing Time: %.2f days", averageProcessingTime));
+        } else {
+            prescriptionFulfillmentReport.addContent("No prescriptions were filled in the specified period.");
+        }
+
+        prescriptionFulfillmentReport.writeToFile();
+
+        System.out.println("Prescription Fulfillment Report generated successfully.");
+    }
+
+    /**
+     * Generates an Inventory Turnover Rate Report.
+     * Calculates the frequency of stock depletion for each medication over a specified period.
+     *
+     * @param start The start date for the analysis.
+     * @param end   The end date for the analysis.
+     */
+    public static void generateTurnoverRateReport(LocalDate start, LocalDate end) {
+        transactionLog.readFromFile();
+        ArrayList<String> transactions = transactionLog.getContents();
+        ExternalFile turnoverReport = new ExternalFile("InventoryTurnoverRateReport.txt");
+        turnoverReport.clearContent();
+        turnoverReport.addContent("Inventory Turnover Rate Report from " + start + " to " + end + " (Generated on " + LocalDate.now() + ")");
+        turnoverReport.addContent("");
+
+        // Map to hold itemID and number of times its stock was depleted
+        Map<Integer, Integer> turnoverData = new HashMap<>();
+
+        for (String strTransaction : transactions) {
+            String[] transaction = strTransaction.split(",");
+
+            // Expected format for inventory depletion:
+            // eventType can be "Inventory Adjustment", "Shipment Received", "Prescription Filled", etc.
+
+            if (transaction.length < 4) {
+                continue; // Skip malformed entries
+            }
+
+            try {
+                LocalDate transactionDate = LocalDate.parse(transaction[2]);
+                if (!transactionDate.isBefore(start) && !transactionDate.isAfter(end)) { // Within date range
+                    String eventType = transaction[3];
+                    if (eventType.equals("Prescription Filled") || eventType.equals("Inventory Adjustment")) {
+                        int itemID = Integer.parseInt(transaction[5]); // Assuming itemID is at index 5
+                        // Check if stock was depleted after this transaction
+                        InventoryItem item = InventoryControl.getItemFromID(itemID);
+                        if (item != null && item.getQuantity() <= item.getReorderThreshold()) {
+                            turnoverData.put(itemID, turnoverData.getOrDefault(itemID, 0) + 1);
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                // Skip entries with parsing issues
+                continue;
+            }
+        }
+
+        // Add turnover data to the report
+        turnoverReport.addContent(String.format("%-20s %-20s", "Medication", "Turnover Rate"));
+        turnoverReport.addContent("-----------------------------------------------");
+        for (Map.Entry<Integer, Integer> entry : turnoverData.entrySet()) {
+            InventoryItem item = InventoryControl.getItemFromID(entry.getKey());
+            if (item != null) {
+                turnoverReport.addContent(String.format("%-20s %-20d", item.getName(), entry.getValue()));
+            }
+        }
+
+        turnoverReport.writeToFile();
+
+        System.out.println("Inventory Turnover Rate Report generated successfully.");
+    }
+
+    /**
+     * Logs a transaction entry.
+     *
+     * @param logEntry The transaction details as a comma-separated string.
+     */
+    public static void logTransaction(String logEntry) {
+        transactionLog.addContent(logEntry);
+        transactionLog.writeToFile();
     }
     
 }

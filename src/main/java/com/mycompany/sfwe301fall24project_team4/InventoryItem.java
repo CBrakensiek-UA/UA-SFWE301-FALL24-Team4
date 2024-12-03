@@ -10,11 +10,11 @@ public class InventoryItem {
     private String name;
     private int ID;
     private int quantity;
-    private int cost; // Units: cents (not dollars and cents) to avoid floating point weirdness
+    private int cost;
     private LocalDate expirationDate;
-    private int reorderThreshold; // New attribute
-    private int criticalThreshold; // New attribute
     private String location;
+    private int reorderThreshold;
+    private int criticalThreshold;
 
     public InventoryItem() {
 
@@ -37,7 +37,16 @@ public class InventoryItem {
 
     @Override
     public String toString() {
-        return name + " (ID: " + ID + ")";
+        return "InventoryItem{" +
+                "name='" + name + '\'' +
+                ", ID=" + ID +
+                ", quantity=" + quantity +
+                ", cost=" + cost +
+                ", expirationDate=" + expirationDate +
+                ", location='" + location + '\'' +
+                ", reorderThreshold=" + reorderThreshold +
+                ", criticalThreshold=" + criticalThreshold +
+                '}';
     }
 
     public boolean isExpired() {

@@ -1,6 +1,2 @@
-Inventory Report from 2024-11-01 to 2024-11-30 (generated 2024-11-29)
+Inventory Report from 2020-01-01 to 2020-01-31 (generated 2024-12-02)
 
-On 2024-11-25, Bill (ID: 1) performed a Inventory Audit on Skittles (ID: 24344). Old Quantity: 5, New Quantity: 6. Reason: 'Audit discrepancy'.
-On 2024-11-25, Bill (ID: 1) performed a Inventory Audit on Aspirin (ID: 12345). Old Quantity: 100, New Quantity: 101. Reason: 'Audit discrepancy'.
-On 2024-11-25, Bill (ID: 1) performed a Inventory Adjustment on Aspirin (ID: 12345). Old Quantity: 101, New Quantity: 33. Reason: 'Incorrect Input.'.
-On 2024-11-27, Bill (ID: 1) performed a Inventory Adjustment on Aspirin (ID: 12345). Old Quantity: 100, New Quantity: 33. Reason: 'Just because.'.

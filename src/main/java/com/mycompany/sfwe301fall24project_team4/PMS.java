@@ -94,6 +94,9 @@ public class PMS {
         System.out.println(" 25) Generate inventory valuation Report");
         System.out.println(" 26) Generate user activity report");
         System.out.println(" 27) Generate purchase report");
+        System.out.println(" 28) Generate sales trend analysis report");
+        System.out.println(" 29) Generate prescription fulfillment report");
+        System.out.println(" 30) Generate inventory turnover rate report"); // New Option
         System.out.print("Option: ");
     }
 
@@ -163,52 +166,8 @@ public class PMS {
                     InventoryControl.returnItem(testUser2);
                     break;
                 case 20:
-                    // Implement Financial Report Generation
-                    System.out.println("Choose a suboption:");
-                    System.out.println("  1) Monthly financial report");
-                    System.out.println("  2) Custom timerange financial report");
-                    System.out.print("Option: ");
-                    if (!scnr.hasNextInt()) {
-                        System.out.println("Invalid input. Returning to main menu.");
-                        scnr.next(); // Clear invalid input
-                        break;
-                    }
-                    subchoice = scnr.nextInt();
-
-                    if (subchoice == 1) {
-                        System.out.print("Enter year: ");
-                        if (!scnr.hasNextInt()) {
-                            System.out.println("Invalid input. Year must be an integer.");
-                            scnr.next(); // Clear invalid input
-                            break;
-                        }
-                        int year = scnr.nextInt();
-                        System.out.print("Enter month (1-12): ");
-                        if (!scnr.hasNextInt()) {
-                            System.out.println("Invalid input. Month must be an integer between 1 and 12.");
-                            scnr.next(); // Clear invalid input
-                            break;
-                        }
-                        int month = scnr.nextInt();
-                        if (month < 1 || month > 12) {
-                            System.out.println("Invalid month. Please enter a value between 1 and 12.");
-                            break;
-                        }
-                        ReportGeneration.generateFinancialReport(year, month);
-                    } else if (subchoice == 2) {
-                        System.out.print("Enter start date (YYYY-MM-DD): ");
-                        String start = scnr.next();
-                        System.out.print("Enter end date (YYYY-MM-DD): ");
-                        String end = scnr.next();
-                        try {
-                            ReportGeneration.generateFinancialReport(LocalDate.parse(start), LocalDate.parse(end));
-                        } catch (Exception e) {
-                            System.out.println("Invalid date format. Please use YYYY-MM-DD.");
-                        }
-                    } else {
-                        System.out.println("Invalid suboption.");
-                    }
-
+                    // Financial Report Generation has been removed or relocated
+                    System.out.println("Financial Report Generation has been moved to separate functionalities or is not yet implemented.");
                     break;
                 case 21:
                     // Implement Inventory Report Generation
@@ -223,42 +182,48 @@ public class PMS {
                     }
                     subchoice = scnr.nextInt();
 
-                    if (subchoice == 1) {
-                        System.out.print("Enter year: ");
-                        if (!scnr.hasNextInt()) {
-                            System.out.println("Invalid input. Year must be an integer.");
-                            scnr.next(); // Clear invalid input
+                    switch (subchoice) {
+                        case 1:
+                            System.out.print("Enter year: ");
+                            if (!scnr.hasNextInt()) {
+                                System.out.println("Invalid input. Year must be an integer.");
+                                scnr.next(); // Clear invalid input
+                                break;
+                            }
+                            int invYear = scnr.nextInt();
+                            System.out.print("Enter month (1-12): ");
+                            if (!scnr.hasNextInt()) {
+                                System.out.println("Invalid input. Month must be an integer between 1 and 12.");
+                                scnr.next(); // Clear invalid input
+                                break;
+                            }
+                            int invMonth = scnr.nextInt();
+                            if (invMonth < 1 || invMonth > 12) {
+                                System.out.println("Invalid month. Please enter a value between 1 and 12.");
+                                break;
+                            }
+                            ReportGeneration.generateInventoryReport(invYear, invMonth);
                             break;
-                        }
-                        int year = scnr.nextInt();
-                        System.out.print("Enter month (1-12): ");
-                        if (!scnr.hasNextInt()) {
-                            System.out.println("Invalid input. Month must be an integer between 1 and 12.");
-                            scnr.next(); // Clear invalid input
+                        case 2:
+                            System.out.print("Enter start date (YYYY-MM-DD): ");
+                            String invStart = scnr.next();
+                            System.out.print("Enter end date (YYYY-MM-DD): ");
+                            String invEnd = scnr.next();
+                            try {
+                                LocalDate start = LocalDate.parse(invStart);
+                                LocalDate end = LocalDate.parse(invEnd);
+                                ReportGeneration.generateInventoryReport(start, end);
+                            } catch (Exception e) {
+                                System.out.println("Invalid date format. Please use YYYY-MM-DD.");
+                            }
                             break;
-                        }
-                        int month = scnr.nextInt();
-                        if (month < 1 || month > 12) {
-                            System.out.println("Invalid month. Please enter a value between 1 and 12.");
+                        default:
+                            System.out.println("Invalid suboption.");
                             break;
-                        }
-                        ReportGeneration.generateInventoryReport(year, month);
-                    } else if (subchoice == 2) {
-                        System.out.print("Enter start date (YYYY-MM-DD): ");
-                        String start = scnr.next();
-                        System.out.print("Enter end date (YYYY-MM-DD): ");
-                        String end = scnr.next();
-                        try {
-                            ReportGeneration.generateInventoryReport(LocalDate.parse(start), LocalDate.parse(end));
-                        } catch (Exception e) {
-                            System.out.println("Invalid date format. Please use YYYY-MM-DD.");
-                        }
-                    } else {
-                        System.out.println("Invalid suboption.");
                     }
-
                     break;
                 case 22:
+                    // Implement Transaction Report Generation
                     System.out.println("Choose a suboption:");
                     System.out.println("  1) Monthly transaction report");
                     System.out.println("  2) Custom timerange transaction report");
@@ -270,40 +235,45 @@ public class PMS {
                     }
                     subchoice = scnr.nextInt();
 
-                    if (subchoice == 1) {
-                        System.out.print("Enter year: ");
-                        if (!scnr.hasNextInt()) {
-                            System.out.println("Invalid input. Year must be an integer.");
-                            scnr.next(); // Clear invalid input
+                    switch (subchoice) {
+                        case 1:
+                            System.out.print("Enter year: ");
+                            if (!scnr.hasNextInt()) {
+                                System.out.println("Invalid input. Year must be an integer.");
+                                scnr.next(); // Clear invalid input
+                                break;
+                            }
+                            int txnYear = scnr.nextInt();
+                            System.out.print("Enter month (1-12): ");
+                            if (!scnr.hasNextInt()) {
+                                System.out.println("Invalid input. Month must be an integer between 1 and 12.");
+                                scnr.next(); // Clear invalid input
+                                break;
+                            }
+                            int txnMonth = scnr.nextInt();
+                            if (txnMonth < 1 || txnMonth > 12) {
+                                System.out.println("Invalid month. Please enter a value between 1 and 12.");
+                                break;
+                            }
+                            ReportGeneration.generateTransactionReport(txnYear, txnMonth);
                             break;
-                        }
-                        int year = scnr.nextInt();
-                        System.out.print("Enter month (1-12): ");
-                        if (!scnr.hasNextInt()) {
-                            System.out.println("Invalid input. Month must be an integer between 1 and 12.");
-                            scnr.next(); // Clear invalid input
+                        case 2:
+                            System.out.print("Enter start date (YYYY-MM-DD): ");
+                            String txnStart = scnr.next();
+                            System.out.print("Enter end date (YYYY-MM-DD): ");
+                            String txnEnd = scnr.next();
+                            try {
+                                LocalDate start = LocalDate.parse(txnStart);
+                                LocalDate end = LocalDate.parse(txnEnd);
+                                ReportGeneration.generateTransactionReport(start, end);
+                            } catch (Exception e) {
+                                System.out.println("Invalid date format. Please use YYYY-MM-DD.");
+                            }
                             break;
-                        }
-                        int month = scnr.nextInt();
-                        if (month < 1 || month > 12) {
-                            System.out.println("Invalid month. Please enter a value between 1 and 12.");
+                        default:
+                            System.out.println("Invalid suboption.");
                             break;
-                        }
-                        ReportGeneration.generateTransactionReport(year, month);
-                    } else if (subchoice == 2) {
-                        System.out.print("Enter start date (YYYY-MM-DD): ");
-                        String start = scnr.next();
-                        System.out.print("Enter end date (YYYY-MM-DD): ");
-                        String end = scnr.next();
-                        try {
-                            ReportGeneration.generateTransactionReport(LocalDate.parse(start), LocalDate.parse(end));
-                        } catch (Exception e) {
-                            System.out.println("Invalid date format. Please use YYYY-MM-DD.");
-                        }
-                    } else {
-                        System.out.println("Invalid suboption.");
                     }
-
                     break;
                 case 23:
                     ReportGeneration.generateCriticalStockLevelsReport();
@@ -347,46 +317,93 @@ public class PMS {
                     }
                     int purchaseSubchoice = scnr.nextInt();
 
-                    if (purchaseSubchoice == 1) {
-                        System.out.print("Enter year: ");
-                        if (!scnr.hasNextInt()) {
-                            System.out.println("Invalid input. Year must be an integer.");
-                            scnr.next(); // Clear invalid input
+                    switch (purchaseSubchoice) {
+                        case 1:
+                            System.out.print("Enter year: ");
+                            if (!scnr.hasNextInt()) {
+                                System.out.println("Invalid input. Year must be an integer.");
+                                scnr.next(); // Clear invalid input
+                                break;
+                            }
+                            int pYear = scnr.nextInt();
+                            System.out.print("Enter month (1-12): ");
+                            if (!scnr.hasNextInt()) {
+                                System.out.println("Invalid input. Month must be an integer between 1 and 12.");
+                                scnr.next(); // Clear invalid input
+                                break;
+                            }
+                            int pMonth = scnr.nextInt();
+                            if (pMonth < 1 || pMonth > 12) {
+                                System.out.println("Invalid month. Please enter a value between 1 and 12.");
+                                break;
+                            }
+                            ReportGeneration.generateMonthlyPurchaseReport(pYear, pMonth);
                             break;
-                        }
-                        int pYear = scnr.nextInt();
-                        System.out.print("Enter month (1-12): ");
-                        if (!scnr.hasNextInt()) {
-                            System.out.println("Invalid input. Month must be an integer between 1 and 12.");
-                            scnr.next(); // Clear invalid input
+                        case 2:
+                            System.out.print("Enter start date (YYYY-MM-DD): ");
+                            String pStart = scnr.next();
+                            System.out.print("Enter end date (YYYY-MM-DD): ");
+                            String pEnd = scnr.next();
+                            try {
+                                LocalDate start = LocalDate.parse(pStart);
+                                LocalDate end = LocalDate.parse(pEnd);
+                                ReportGeneration.generateCustomTimeRangePurchaseReport(start, end);
+                            } catch (Exception e) {
+                                System.out.println("Invalid date format. Please use YYYY-MM-DD.");
+                            }
                             break;
-                        }
-                        int pMonth = scnr.nextInt();
-                        if (pMonth < 1 || pMonth > 12) {
-                            System.out.println("Invalid month. Please enter a value between 1 and 12.");
+                        default:
+                            System.out.println("Invalid suboption.");
                             break;
-                        }
-                        ReportGeneration.generatePurchaseReport(pYear, pMonth);
-                    } else if (purchaseSubchoice == 2) {
-                        System.out.print("Enter start date (YYYY-MM-DD): ");
-                        String pStart = scnr.next();
-                        System.out.print("Enter end date (YYYY-MM-DD): ");
-                        String pEnd = scnr.next();
-                        try {
-                            ReportGeneration.generatePurchaseReport(LocalDate.parse(pStart), LocalDate.parse(pEnd));
-                        } catch (Exception e) {
-                            System.out.println("Invalid date format. Please use YYYY-MM-DD.");
-                        }
-                    } else {
-                        System.out.println("Invalid suboption.");
                     }
-
+                    break;
+                case 28:
+                    // Generate Sales Trend Analysis Report
+                    System.out.print("Enter start date for sales trend analysis (YYYY-MM-DD): ");
+                    String trendStart = scnr.next();
+                    System.out.print("Enter end date for sales trend analysis (YYYY-MM-DD): ");
+                    String trendEnd = scnr.next();
+                    try {
+                        LocalDate startDate = LocalDate.parse(trendStart);
+                        LocalDate endDate = LocalDate.parse(trendEnd);
+                        ReportGeneration.generateSalesTrendAnalysisReport(startDate, endDate);
+                    } catch (Exception e) {
+                        System.out.println("Invalid date format. Please use YYYY-MM-DD.");
+                    }
+                    break;
+                case 29:
+                    // Generate Prescription Fulfillment Report
+                    System.out.print("Enter start date for prescription fulfillment analysis (YYYY-MM-DD): ");
+                    String fulfillStart = scnr.next();
+                    System.out.print("Enter end date for prescription fulfillment analysis (YYYY-MM-DD): ");
+                    String fulfillEnd = scnr.next();
+                    try {
+                        LocalDate startDate = LocalDate.parse(fulfillStart);
+                        LocalDate endDate = LocalDate.parse(fulfillEnd);
+                        ReportGeneration.generatePrescriptionFulfillmentReport(startDate, endDate);
+                    } catch (Exception e) {
+                        System.out.println("Invalid date format. Please use YYYY-MM-DD.");
+                    }
+                    break;
+                case 30:
+                    // Generate Inventory Turnover Rate Report
+                    System.out.print("Enter start date for inventory turnover analysis (YYYY-MM-DD): ");
+                    String turnoverStart = scnr.next();
+                    System.out.print("Enter end date for inventory turnover analysis (YYYY-MM-DD): ");
+                    String turnoverEnd = scnr.next();
+                    try {
+                        LocalDate startDate = LocalDate.parse(turnoverStart);
+                        LocalDate endDate = LocalDate.parse(turnoverEnd);
+                        ReportGeneration.generateTurnoverRateReport(startDate, endDate);
+                    } catch (Exception e) {
+                        System.out.println("Invalid date format. Please use YYYY-MM-DD.");
+                    }
                     break;
                 default:
                     System.out.println("Invalid option.");
                     break;
             }
-            
+
             System.out.println();
         }
 

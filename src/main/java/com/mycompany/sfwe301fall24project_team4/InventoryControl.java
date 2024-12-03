@@ -11,6 +11,7 @@ public class InventoryControl {
 
     public static ArrayList<InventoryItem> inventory = new ArrayList<>();
     public static ArrayList<Prescription> prescriptions = new ArrayList<>();
+    public static PharmacyStaff currentUser = PMS.currentUser;
 
     /**
      * Retrieves an inventory item based on its ID.
@@ -43,6 +44,30 @@ public class InventoryControl {
      */
     public static void addPrescription(Prescription prescription) {
         prescriptions.add(prescription);
+    }
+
+    /**
+     * Retrieves a prescription by its ID.
+     *
+     * @param id The ID of the prescription.
+     * @return The Prescription if found, otherwise null.
+     */
+    public static Prescription getPrescriptionByID(int id) {
+        for (Prescription prescription : prescriptions) {
+            if (prescription.getID() == id) {
+                return prescription;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Logs a transaction.
+     *
+     * @param logEntry The transaction details as a comma-separated string.
+     */
+    public static void logTransaction(String logEntry) {
+        ReportGeneration.logTransaction(logEntry);
     }
 
     /**
@@ -123,43 +148,44 @@ public class InventoryControl {
     /**
      * Fills a prescription based on its ID.
      */
-    public static void fillPrescription() {
-        // Ensure only authorized users can fill prescriptions
-        if (!PMS.currentUser.getRole().equals("Pharmacist")
-                && !PMS.currentUser.getRole().equals("Pharmacy Manager")) {
-            System.out.println("Access denied. Only Pharmacists or Pharmacy Managers can fill prescriptions.");
+        public static void fillPrescription() {
+    Scanner scnr = new Scanner(System.in);
+        System.out.print("Enter Prescription ID to fill: ");
+        int prescriptionID = scnr.nextInt();
+        Prescription prescription = getPrescriptionByID(prescriptionID);
+        if (prescription == null) {
+            System.out.println("Prescription not found.");
+            return;
+        }
+        if (prescription.isFilled()) {
+            System.out.println("Prescription is already filled.");
             return;
         }
 
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("Enter the Prescription ID to fill:");
-        if (!scanner.hasNextInt()) {
-            System.out.println("Invalid input. Prescription ID must be an integer.");
-            scanner.next(); // Clear invalid input
+        InventoryItem item = getItemFromID(prescription.getMedicationID());
+        if (item == null) {
+            System.out.println("Medication not found in inventory.");
             return;
         }
-        int prescriptionID = scanner.nextInt();
-
-        Prescription prescriptionToFill = null;
-        for (Prescription prescription : prescriptions) {
-            if (prescription.getID() == prescriptionID && !prescription.isFilled()) {
-                prescriptionToFill = prescription;
-                break;
-            }
-        }
-
-        if (prescriptionToFill == null) {
-            System.out.println("Prescription not found or already filled.");
+        if (item.getQuantity() < prescription.getAmount()) {
+            System.out.println("Insufficient stock to fill the prescription.");
             return;
         }
 
-        boolean success = prescriptionToFill.fillPrescription();
-        if (success) {
-            System.out.println("Prescription " + prescriptionID + " has been filled.");
-        } else {
-            System.out.println("Failed to fill prescription " + prescriptionID + ".");
-        }
+        // Deduct the quantity
+        item.setQuantity(item.getQuantity() - prescription.getAmount());
+
+        // Mark prescription as filled
+        LocalDate filledDate = LocalDate.now();
+        prescription.setFilled(true, filledDate);
+
+        // Log the transaction
+        String logEntry = currentUser.getName() + "," + currentUser.getID() + "," + LocalDate.now()
+                + "," + "Prescription Filled" + "," + prescription.getID() + "," + prescription.getMedicationID()
+                + "," + prescription.getAmount() + "," + prescription.isFilled() + "," + filledDate;
+        logTransaction(logEntry);
+
+        System.out.println("Prescription filled successfully.");
     }
 
     /**
@@ -206,60 +232,30 @@ public class InventoryControl {
     }
 
     /**
-     * Allows authorized users to adjust inventory levels manually.
+     * Adjusts inventory for a specific item and logs the adjustment.
      */
     public static void adjustInventory() {
-        // Ensure only authorized users can adjust inventory
-        if (!PMS.currentUser.getRole().equals("Pharmacy Manager")
-                && !PMS.currentUser.getRole().equals("Pharmacist")) {
-            System.out.println("Access denied. Only Pharmacy Managers or Pharmacists can adjust inventory.");
-            return;
-        }
-
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("Enter the Inventory Item ID to adjust:");
-        if (!scanner.hasNextInt()) {
-            System.out.println("Invalid input. Item ID must be an integer.");
-            scanner.next(); // Clear invalid input
-            return;
-        }
-        int itemId = scanner.nextInt();
-
-        InventoryItem item = getItemFromID(itemId);
+        Scanner scnr = new Scanner(System.in);
+        System.out.print("Enter the Item ID to adjust: ");
+        int itemID = scnr.nextInt();
+        InventoryItem item = getItemFromID(itemID);
         if (item == null) {
-            System.out.println("Inventory Item not found.");
+            System.out.println("Item not found.");
             return;
         }
 
-        System.out.println("Current Quantity: " + item.getQuantity());
-        System.out.print("Enter new quantity: ");
-        if (!scanner.hasNextInt()) {
-            System.out.println("Invalid input. Quantity must be an integer.");
-            scanner.next(); // Clear invalid input
-            return;
-        }
-        int newQuantity = scanner.nextInt();
-
-        int oldQuantity = item.getQuantity();
-        item.setQuantity(newQuantity);
-
-        System.out.println("Inventory adjusted successfully.");
+        System.out.print("Enter the quantity to adjust (use negative numbers to decrease): ");
+        int quantityAdjustment = scnr.nextInt();
+        item.setQuantity(item.getQuantity() + quantityAdjustment);
 
         // Log the adjustment
-        System.out.print("Enter the reason for adjustment: ");
-        scanner.nextLine(); // Consume newline
-        String reason = scanner.nextLine();
+        String logEntry = currentUser.getName() + "," + currentUser.getID() + "," + LocalDate.now()
+                + "," + "Inventory Adjustment" + "," + "N/A" + "," + itemID + "," + quantityAdjustment + "," + "N/A";
+        logTransaction(logEntry);
 
-        ReportGeneration.logInventoryAdjustment(
-                PMS.currentUser,
-                item,
-                oldQuantity,
-                newQuantity,
-                reason
-        );
+        System.out.println("Inventory adjusted successfully.");
     }
-
+    
     /**
      * Allows users to scan an inventory item by its ID.
      *

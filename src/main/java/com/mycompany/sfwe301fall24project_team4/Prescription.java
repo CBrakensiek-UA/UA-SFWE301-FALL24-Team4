@@ -1,5 +1,7 @@
 package com.mycompany.sfwe301fall24project_team4;
 
+import java.time.LocalDate;
+
 /**
  *
  */
@@ -9,6 +11,7 @@ public class Prescription {
     private int medicationID;
     private int amount;
     private boolean isFilled; // To track if the prescription is filled
+    private LocalDate filledTime;
 
     public Prescription() {
 
@@ -20,6 +23,7 @@ public class Prescription {
         this.medicationID = medicationID;
         this.amount = amount;
         this.isFilled = false;
+        this.filledTime = null;
     }
 
     public int getID() {
@@ -44,6 +48,27 @@ public class Prescription {
 
     public void setFilled(boolean filled) {
         isFilled = filled;
+    }
+
+    public LocalDate getFilledTime() {
+        return filledTime;
+    }
+
+    public void setFilled(boolean filled, LocalDate filledTime) {
+        this.isFilled = filled;
+        this.filledTime = filledTime;
+    }
+
+    @Override
+    public String toString() {
+        return "Prescription{" +
+                "ID=" + ID +
+                ", patient=" + patient.getName() +
+                ", medicationID=" + medicationID +
+                ", amount=" + amount +
+                ", isFilled=" + isFilled +
+                ", filledTime=" + filledTime +
+                '}';
     }
 
     /**
