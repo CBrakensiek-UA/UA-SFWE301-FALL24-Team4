@@ -1,0 +1,19 @@
+Monthly Financial Report for 2024-01 (Generated on 2024-12-03)
+
+Total Revenue:
+  Prescription Sales: $0.00
+  Non-Prescription Sales: $0.00
+  Total Revenue: $0.00
+
+Expense Summaries:
+  Inventory Purchases: $0.00
+  Total Expenses: $0.00
+
+Profit Margins: $0.00
+
+Customer Transactions by Payment Type:
+  Cash Transactions: 0
+  Card Transactions: 0
+  Insurance Transactions: 0
+  Total Transactions: 0
+

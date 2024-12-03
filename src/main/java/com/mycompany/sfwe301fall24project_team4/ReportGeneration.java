@@ -23,6 +23,8 @@ public class ReportGeneration {
     private static final ExternalFile userActivityReport = new ExternalFile("UserActivityReport.txt");
     private static final ExternalFile salesTrendReport = new ExternalFile("SalesTrendAnalysisReport.txt");
     private static final ExternalFile prescriptionFulfillmentReport = new ExternalFile("PrescriptionFulfillmentReport.txt");
+    private static final ExternalFile turnoverReport = new ExternalFile("InventoryTurnoverRateReport.txt");
+    private static final ExternalFile financialMonthlyReport = new ExternalFile("FinancialMonthlyReport.txt");
 
     /**
      * Logs a user login event.
@@ -845,4 +847,98 @@ public class ReportGeneration {
         transactionLog.writeToFile();
     }
     
+    /**
+     * Generates a Monthly Financial Report.
+     * Includes Total Revenue, Expense Summaries, Profit Margins, and Customer Transactions.
+     *
+     * @param year  The year for the report.
+     * @param month The month for the report (1-12).
+     */
+    public static void generateMonthlyFinancialReport(int year, int month) {
+        transactionLog.readFromFile();
+        ArrayList<String> transactions = transactionLog.getContents();
+        financialMonthlyReport.clearContent();
+        financialMonthlyReport.addContent("Monthly Financial Report for " + YearMonth.of(year, month) + " (Generated on " + LocalDate.now() + ")");
+        financialMonthlyReport.addContent("");
+
+        double totalRevenuePrescription = 0.0;
+        double totalRevenueNonPrescription = 0.0;
+        double totalExpenses = 0.0;
+        int transactionsCash = 0;
+        int transactionsCard = 0;
+        int transactionsInsurance = 0;
+
+        for (String strTransaction : transactions) {
+            String[] transaction = strTransaction.split(",");
+
+            if (transaction.length < 9) {
+                continue; // Skip malformed entries
+            }
+
+            try {
+                LocalDate transactionDate = LocalDate.parse(transaction[2]);
+                if (transactionDate.getYear() == year && transactionDate.getMonthValue() == month) {
+                    String eventType = transaction[3].trim();
+                    String paymentType = transaction[7].trim();
+                    double amount = Double.parseDouble(transaction[8].trim());
+
+                    // Count payment types
+                    switch (paymentType) {
+                        case "Cash":
+                            transactionsCash++;
+                            break;
+                        case "Card":
+                            transactionsCard++;
+                            break;
+                        case "Insurance":
+                            transactionsInsurance++;
+                            break;
+                        default:
+                            // Handle other payment types or ignore
+                            break;
+                    }
+
+                    if (eventType.equalsIgnoreCase("Prescription Filled")) {
+                        totalRevenuePrescription += amount;
+                    } else if (eventType.equalsIgnoreCase("Non-Prescription Sale")) {
+                        totalRevenueNonPrescription += amount;
+                    } else if (eventType.equalsIgnoreCase("Inventory Purchase")) {
+                        totalExpenses += amount;
+                    }
+                }
+            } catch (Exception e) {
+                // Skip entries with parsing issues
+                continue;
+            }
+        }
+
+        double totalRevenue = totalRevenuePrescription + totalRevenueNonPrescription;
+        double profitMargins = totalRevenue - totalExpenses;
+
+        // Writing the report
+        financialMonthlyReport.addContent("Total Revenue:");
+        financialMonthlyReport.addContent(String.format("  Prescription Sales: $%.2f", totalRevenuePrescription));
+        financialMonthlyReport.addContent(String.format("  Non-Prescription Sales: $%.2f", totalRevenueNonPrescription));
+        financialMonthlyReport.addContent(String.format("  Total Revenue: $%.2f", totalRevenue));
+        financialMonthlyReport.addContent("");
+
+        financialMonthlyReport.addContent("Expense Summaries:");
+        financialMonthlyReport.addContent(String.format("  Inventory Purchases: $%.2f", totalExpenses));
+        financialMonthlyReport.addContent(String.format("  Total Expenses: $%.2f", totalExpenses));
+        financialMonthlyReport.addContent("");
+
+        financialMonthlyReport.addContent(String.format("Profit Margins: $%.2f", profitMargins));
+        financialMonthlyReport.addContent("");
+
+        financialMonthlyReport.addContent("Customer Transactions by Payment Type:");
+        financialMonthlyReport.addContent(String.format("  Cash Transactions: %d", transactionsCash));
+        financialMonthlyReport.addContent(String.format("  Card Transactions: %d", transactionsCard));
+        financialMonthlyReport.addContent(String.format("  Insurance Transactions: %d", transactionsInsurance));
+        financialMonthlyReport.addContent(String.format("  Total Transactions: %d", transactionsCash + transactionsCard + transactionsInsurance));
+        financialMonthlyReport.addContent("");
+
+        financialMonthlyReport.writeToFile();
+
+        System.out.println("Monthly Financial Report for " + YearMonth.of(year, month) + " generated successfully.");
+    }
 }

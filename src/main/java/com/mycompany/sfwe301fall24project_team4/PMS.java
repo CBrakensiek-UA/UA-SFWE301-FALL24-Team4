@@ -74,6 +74,42 @@ public class PMS {
     }
 
     /**
+     * Handles the generation of the Monthly Financial Report.
+     *
+     * @param scnr Scanner object for user input.
+     */
+    private static void handleMonthlyFinancialReport(Scanner scnr) {
+        // Check if the current user is a Pharmacy Manager
+        if (!currentUser.getRole().equalsIgnoreCase("Pharmacy Manager")) {
+            System.out.println("Access denied. Only Pharmacy Managers can generate financial reports.");
+            return;
+        }
+
+        System.out.print("Enter the year for the report (e.g., 2024): ");
+        if (!scnr.hasNextInt()) {
+            System.out.println("Invalid input. Year must be an integer.");
+            scnr.next(); // Clear invalid input
+            return;
+        }
+        int year = scnr.nextInt();
+
+        System.out.print("Enter the month for the report (1-12): ");
+        if (!scnr.hasNextInt()) {
+            System.out.println("Invalid input. Month must be an integer between 1 and 12.");
+            scnr.next(); // Clear invalid input
+            return;
+        }
+        int month = scnr.nextInt();
+
+        if (month < 1 || month > 12) {
+            System.out.println("Invalid month. Please enter a value between 1 and 12.");
+            return;
+        }
+
+        ReportGeneration.generateMonthlyFinancialReport(year, month);
+    }
+
+    /**
      * Displays the main menu options.
      */
     public static void displayOptions() {
@@ -96,7 +132,8 @@ public class PMS {
         System.out.println(" 27) Generate purchase report");
         System.out.println(" 28) Generate sales trend analysis report");
         System.out.println(" 29) Generate prescription fulfillment report");
-        System.out.println(" 30) Generate inventory turnover rate report"); // New Option
+        System.out.println(" 30) Generate inventory turnover rate report");
+        System.out.println(" 31) Generate Monthly Financial Report"); // New Option
         System.out.print("Option: ");
     }
 
@@ -119,9 +156,9 @@ public class PMS {
 
         System.out.println("Created testing data.\n");
         System.out.println("Welcome to the Pharmacy Management System (Inventory Control and Report Generation)!");
-        
+
         InventoryControl.automaticChecks();
-        
+
         int choice = -1;
         int subchoice = -1;
         while (choice != 0) {
@@ -398,6 +435,10 @@ public class PMS {
                     } catch (Exception e) {
                         System.out.println("Invalid date format. Please use YYYY-MM-DD.");
                     }
+                    break;
+                case 31:
+                    // Generate Monthly Financial Report
+                    handleMonthlyFinancialReport(scnr);
                     break;
                 default:
                     System.out.println("Invalid option.");
